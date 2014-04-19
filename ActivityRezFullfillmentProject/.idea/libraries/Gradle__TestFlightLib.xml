@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="Gradle: TestFlightLib">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/ActivityRezFullfillment/libs/TestFlightLib.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

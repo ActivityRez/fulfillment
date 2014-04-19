@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/result_wrap"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/my_white"
+    android:padding="5dp">
+    <CheckBox
+        android:id="@+id/checkbox1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="12dp"
+        android:button="@drawable/custom_checkbox"/>
+    <RelativeLayout
+        android:id="@+id/sale_info"
+        android:layout_height="wrap_content"
+        android:layout_width="50dp"
+        android:layout_marginTop="10dp">
+        <com.activityrez.fulfillment.CustomText
+            android:id="@+id/voucher_id"
+            android:text="22132312"
+            android:textColor="@color/my_black"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:textSize="18dp"
+            android:gravity="center" />
+        <com.activityrez.fulfillment.CustomText
+            android:id="@+id/voucher_title"
+            android:text="sale id"
+            android:textColor="@color/my_grey"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:gravity="center"
+            android:layout_below="@id/voucher_id" />
+        </RelativeLayout>
+    <RelativeLayout
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:layout_toLeftOf="@id/checkbox1"
+        android:layout_toRightOf="@id/sale_info"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp">
+        <ImageButton
+            android:id="@+id/comment_button"
+            android:layout_height="38dp"
+            android:layout_width="38dp"
+            android:src="@drawable/comment_d"
+            android:scaleType="center"
+            android:background="@null"
+            android:layout_marginTop="12dp"
+            android:layout_alignParentRight="true"
+        />
+        <com.activityrez.fulfillment.CustomText
+            android:id="@+id/guestName"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:textColor="@color/my_black"
+            android:layout_toLeftOf="@id/comment_button"
+            android:textSize="38px"
+            />
+        <com.activityrez.fulfillment.CustomText
+            android:id="@+id/guest_title"
+            android:text="Adult (18+)"
+            android:textColor="@color/my_black"
+            android:textSize="18dp"
+            android:layout_height="wrap_content"
+            android:layout_width="100dp"
+            android:layout_below="@id/guestName"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="-4dp"/>
+        <com.activityrez.fulfillment.CustomText
+            android:id="@+id/activity_title"
+            android:text="activity"
+            android:textColor="@color/my_grey"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_below="@id/guestName"
+            android:layout_toRightOf="@id/guest_title" />
+        <com.activityrez.fulfillment.CustomText
+            android:id="@+id/activity_name"
+            android:text="Imma activity title for an activity in barthelona"
+            android:textColor="@color/my_black"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_below="@id/guestName"
+            android:layout_marginRight="10dp"
+            android:layout_toRightOf="@id/activity_title"
+            android:layout_toLeftOf="@id/comment_button"/>
+        <com.activityrez.fulfillment.CustomText
+            android:id="@+id/guest_notes"
+            android:textColor="@color/my_black"
+            android:textSize="28dp"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_below="@id/activity_name"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:paddingRight="30dp"
+            android:paddingLeft="30dp"
+            android:visibility="gone" />
+    </RelativeLayout>
+</RelativeLayout>

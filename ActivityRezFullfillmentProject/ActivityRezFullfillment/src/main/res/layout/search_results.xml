@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<com.activityrez.fulfillment.views.WholeSlider
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/my_white">
+    <ListView
+        android:id="@+id/listview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:divider="#0000"
+        android:dividerHeight="0dp"
+        android:layout_margin="20dp"/>
+    <FrameLayout
+        android:id="@+id/search_error"
+        android:layout_height="fill_parent"
+        android:layout_width="fill_parent"
+        android:background="#3fff"
+        android:visibility="gone">
+        <com.activityrez.fulfillment.CustomText
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textSize="30dp"
+            android:textColor="@color/my_red"
+            android:text="there was an error communicating with the server"
+            />
+        </FrameLayout>
+</com.activityrez.fulfillment.views.WholeSlider>

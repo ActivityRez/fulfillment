@@ -1,0 +1,48 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity"
+    android:id="@+id/activity_wrapper">
+
+    <FrameLayout
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:layout_marginBottom="200dp">
+        <fragment class="com.activityrez.fulfillment.activities.CaptureFragment"
+            android:id="@+id/cap_fragment"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"/>
+    </FrameLayout>
+    <FrameLayout
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:layout_marginBottom="200dp">
+        <fragment class="com.activityrez.fulfillment.activities.SplashFragment"
+            android:id="@+id/the_splasher"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"/>
+    </FrameLayout>
+    <FrameLayout
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:layout_marginBottom="200dp">
+        <fragment class="com.activityrez.fulfillment.activities.SearchFragment"
+            android:id="@+id/search_stuff"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            />
+    </FrameLayout>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_alignParentBottom="true">
+        <fragment class="com.activityrez.fulfillment.activities.NavFragment"
+            android:id="@+id/nav_fragment"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"/>
+    </FrameLayout>
+
+    <!--<include layout="@layout/splash" /> -->
+</RelativeLayout>

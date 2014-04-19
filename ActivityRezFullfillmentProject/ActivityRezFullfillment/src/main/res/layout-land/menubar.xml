@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<com.activityrez.fulfillment.views.SlidingRelative
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/my_blue"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:descendantFocusability="beforeDescendants"
+    android:id="@+id/menu_bar"
+    android:layout_weight="8">
+
+    <RelativeLayout
+        android:id="@+id/LogoLayout"
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:contentDescription="@string/logo"
+            android:src="@drawable/arezlogo"
+            android:layout_margin="20dp" />
+    </RelativeLayout>
+    <include layout="@layout/scan_match" />
+    <include layout="@layout/login" />
+    <RelativeLayout
+        android:id="@+id/ButtonLayout"
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true" >
+
+        <com.activityrez.fulfillment.CustomButton
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/search"
+            android:id="@+id/button"
+            android:height="50dp"
+            android:textSize="28px"
+            android:background="@drawable/nav_button"
+            android:textColor="@color/my_white" />
+
+        <com.activityrez.fulfillment.CustomButton
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/scan"
+            android:id="@+id/button2"
+            android:height="50dp"
+            android:textColor="#fff"
+            android:textSize="28px"
+            android:background="@drawable/nav_button"
+            android:layout_below="@id/button" />
+    </RelativeLayout>
+    <include layout="@layout/search"/>
+    <com.activityrez.fulfillment.CustomText
+        android:id="@+id/scan_status"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="scanning"
+        android:layout_centerVertical="true"
+        android:gravity="center"
+        android:textColor="@color/my_white"
+        android:textSize="32dp"
+        android:visibility="gone"
+    />
+</com.activityrez.fulfillment.views.SlidingRelative>
