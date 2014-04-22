@@ -7,8 +7,8 @@
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="modules">
           <set>
-            <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/ActivityRezFullfillment" />
+            <option value="C:\Users\hiro\Desktop\Digital Mediums\Android\fulfillment\ActivityRezFullfillmentProject" />
+            <option value="C:\Users\hiro\Desktop\Digital Mediums\Android\fulfillment\ActivityRezFullfillmentProject\ActivityRezFullfillment" />
           </set>
         </option>
       </GradleProjectSettings>

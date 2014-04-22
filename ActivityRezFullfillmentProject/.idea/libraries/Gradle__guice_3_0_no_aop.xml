@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="Gradle: guice-3.0-no_aop">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/ActivityRezFullfillment/libs/guice-3.0-no_aop.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>
