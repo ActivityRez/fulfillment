@@ -69,14 +69,15 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:inputType="text"
-            android:hint="last four digits of credit card"
+            android:hint="last 4 digits of credit card"
+            android:textSize="18px"
             android:layout_below="@id/credit_title" />
         <com.activityrez.fulfillment.CustomText
             android:id="@+id/sale_id_title"
             android:layout_height="wrap_content"
             android:layout_width="fill_parent"
             android:layout_below="@id/credit_search"
-            android:text="Sale ID"
+            android:text="sale ID"
             android:textColor="@color/my_white"
             />
         <EditText

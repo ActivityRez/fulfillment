@@ -15,7 +15,7 @@
         android:gravity="center"
         android:text="Circle Island Tour"
         android:textColor="@color/my_white"
-        android:textSize="48px"
+        android:textSize="38px"
         />
     <com.activityrez.fulfillment.CustomText
         android:id="@+id/activityDate"
@@ -34,7 +34,7 @@
         android:gravity="center"
         android:text="3:41pm"
         android:textColor="@color/my_white"
-        android:textSize="32px"
+        android:textSize="30px"
         android:layout_below="@id/activityDate"
         />
     <com.activityrez.fulfillment.CustomText
@@ -44,7 +44,7 @@
         android:gravity="center"
         android:text="HST"
         android:textColor="@color/my_white"
-        android:textSize="32px"
+        android:textSize="30px"
         android:layout_below="@id/activityTime"
         />
     <com.activityrez.fulfillment.CustomText
@@ -54,7 +54,7 @@
         android:gravity="center"
         android:text="Ricky Bobby"
         android:textColor="@color/my_white"
-        android:textSize="44px"
+        android:textSize="36px"
         android:layout_below="@id/activityTimeZone"
         android:layout_marginTop="10dp" />
     <com.activityrez.fulfillment.CustomButton

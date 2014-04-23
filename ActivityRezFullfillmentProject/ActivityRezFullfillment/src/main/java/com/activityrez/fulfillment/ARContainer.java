@@ -40,6 +40,6 @@ public class ARContainer extends Application {
     }
 
     private void initializeTypefaces(){
-        Fonts.MAIN   = Typeface.createFromAsset(getAssets(), "helvetica.otf");
+        Fonts.MAIN   = Typeface.createFromAsset(getAssets(), "HelveticaNeueLTStd-Roman.otf");
     }
 }
