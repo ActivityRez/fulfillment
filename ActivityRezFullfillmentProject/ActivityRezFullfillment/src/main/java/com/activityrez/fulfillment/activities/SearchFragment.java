@@ -84,6 +84,10 @@ public class SearchFragment extends Fragment {
                                     return;
                                 }
                                 JSONArray list = (JSONArray) ret.get("results");
+                                if( list.length()==0 ){
+                                    onError();
+                                    return;
+                                }
 
                                 for (int ni = 0; ni < list.length(); ni++) {
 
@@ -150,6 +154,10 @@ public class SearchFragment extends Fragment {
                                 return;
                             }
                             JSONArray list = (JSONArray)ret.get("results");
+                            if( list.length()==0 ){
+                                onError();
+                                return;
+                            }
                             for(int ni = 0; ni < list.length(); ni++){
                                 Ticket _t = new Ticket();
                                 _t.hydrate(list.get(ni),true);
