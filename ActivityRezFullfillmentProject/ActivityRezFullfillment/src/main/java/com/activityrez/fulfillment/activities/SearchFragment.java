@@ -60,9 +60,17 @@ public class SearchFragment extends Fragment {
         return _v;
     }
 
-    @Subscribe public void onSearchEvent(SearchEvent se){
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ((ListView) _v.findViewById(R.id.listview)).setAdapter(null);
+        Log.i("called","destroyed SearchFragment Adapter");
+    }
 
-        getView().findViewById(R.id.search_error).setVisibility(View.GONE);
+    @Subscribe public void onSearchEvent(SearchEvent se){
+        Log.i("SearchEvent",""+se);
+
+        _v.findViewById(R.id.search_error).setVisibility(View.GONE);
 
         if( results.size() > 0 ) results.clear();
 
@@ -123,11 +131,12 @@ public class SearchFragment extends Fragment {
         t = v.ticket;
     }
     @Subscribe public void onNavStateChange(NavStatus ns){
-        state = ns.state;
-        if(getView() == null)
-            return;
 
-        getView().findViewById(R.id.search_error).setVisibility(View.GONE);
+        if( state == ns.state ) return;
+        state = ns.state;
+        if( getView() == null ) return;
+
+        _v.findViewById(R.id.search_error).setVisibility(View.GONE);
 
         if(results.size() > 0)
             results.clear();
@@ -164,6 +173,8 @@ public class SearchFragment extends Fragment {
                                 results.add(_t);
                             }
                             SearchAdapter s = new SearchAdapter(results);
+
+                            Log.i("monitor","coming!");
                             ListView list_v = (ListView) _v.findViewById(R.id.listview);
                             list_v.setAdapter(s);
                             s.notifyDataSetChanged();

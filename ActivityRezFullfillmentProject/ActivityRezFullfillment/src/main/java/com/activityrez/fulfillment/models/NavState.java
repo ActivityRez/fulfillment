@@ -46,6 +46,8 @@ public class NavState extends Model {
     }
 
     @Subscribe public void onQRCodeFound(QRCodeFound msg){
+        if( state != NavStatus.State.SCANNING ) return;
+
         final long[] successPattern = {0,300};
         final long[] errorPattern = {0,100,30,100};
         final Vibrator v = (Vibrator) ARContainer.context.getSystemService(Context.VIBRATOR_SERVICE);

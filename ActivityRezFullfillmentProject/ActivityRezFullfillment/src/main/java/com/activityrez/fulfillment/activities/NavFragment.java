@@ -40,6 +40,13 @@ public class NavFragment extends Fragment {
         return v;
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        navView = null;
+        Log.i("called","destroyed NavFragment navView");
+    }
+
     @Subscribe public void onNavStatus(NavStatus n){
         if(navView == null) return;
         NavState ns = (NavState) navView.getModel();

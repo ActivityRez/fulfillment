@@ -29,6 +29,7 @@ public class SearchAdapter extends BaseAdapter {
 
     public SearchAdapter(ArrayList<Ticket> r){
         results = r;
+        Log.i("results...","size "+results.size());
         views = new ArrayList<SearchResultView>();
         cviews = new ArrayList<Boolean>();
         for(int ni = 0; ni < r.size(); ni++) {
@@ -59,10 +60,13 @@ public class SearchAdapter extends BaseAdapter {
         if( v == null ){
             v  = inflater.inflate(R.layout.search_result, null, false);
         }
-        views.set( i, new SearchResultView( v, i, results.get(i), cviews ));
+        SearchResultView obj = new SearchResultView( v, i, results.get(i), cviews );
+        views.set( i, obj);
         v = views.get(i).getView();
 
+        Log.i("test","here "+obj);
         return v;
     }
+
 
 }
