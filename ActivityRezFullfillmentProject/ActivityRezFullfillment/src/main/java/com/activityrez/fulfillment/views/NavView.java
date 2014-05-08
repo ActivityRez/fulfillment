@@ -104,9 +104,7 @@ public class NavView extends ViewModel {
                 public void onClick(View view) {
                     InputMethodManager mgr = (InputMethodManager) ARContainer.context.getSystemService(Context.INPUT_METHOD_SERVICE);
                     mgr.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-
-                    if(n.get("ticket") != null)
-                        n.set("ticket",null);
+                    if(n.get("ticket") != null) n.set("ticket",null);
                     ARContainer.bus.post(new NavStatus(NavStatus.State.SCANNING));
                 }
             });

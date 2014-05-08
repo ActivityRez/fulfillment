@@ -24,17 +24,13 @@ import java.util.ArrayList;
 public class SearchAdapter extends BaseAdapter {
     private ArrayList<Ticket> results;
     private ArrayList<SearchResultView> views;
-    private ArrayList<Boolean> cviews;
     private LayoutInflater inflater;
 
     public SearchAdapter(ArrayList<Ticket> r){
         results = r;
-        Log.i("results...","size "+results.size());
         views = new ArrayList<SearchResultView>();
-        cviews = new ArrayList<Boolean>();
         for(int ni = 0; ni < r.size(); ni++) {
             views.add(null);
-            cviews.add(false);
         }
         inflater = (LayoutInflater)ARContainer.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
@@ -56,17 +52,19 @@ public class SearchAdapter extends BaseAdapter {
 
     @Override
     public View getView(final int i, View view, ViewGroup viewGroup) {
-        View v = view;
-        if( v == null ){
-            v  = inflater.inflate(R.layout.search_result, null, false);
+        SearchResultView obj;
+
+        if( view == null ) {
+            view = inflater.inflate(R.layout.search_result, null, false);
         }
-        SearchResultView obj = new SearchResultView( v, i, results.get(i), cviews );
-        views.set( i, obj);
-        v = views.get(i).getView();
+        if( views.get(i) == null ) {
+            obj = new SearchResultView( view, results.get(i) );
+            views.set(i,obj);
+        } else {
+            views.get(i).setView(view);
+        }
 
-        Log.i("test","here "+obj);
-        return v;
+        return view;
     }
-
 
 }

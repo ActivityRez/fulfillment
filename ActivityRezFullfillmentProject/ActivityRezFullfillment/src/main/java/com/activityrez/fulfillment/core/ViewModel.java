@@ -22,13 +22,21 @@ public class ViewModel implements Observer {
     public ViewModel(View v, Model m){
         RoboGuice.getInjector(ARContainer.context).injectMembers(this);
 
-        view = v;
         model = m;
+        setView(v);
 
         model.addObserver(this);
     }
     public View getView(){ return view; }
+    public View setView(View v){
+        view = v;
+        update( model, null );
+        init();
+        return view;
+    }
     public Model getModel(){ return model; }
+
+    public void init(){}
 
     @Override //this is where you connect fields to the view
     public void update(Observable observable, Object data) {}

@@ -12,6 +12,7 @@ import android.widget.ListView;
 import com.activityrez.fulfillment.ARContainer;
 import com.activityrez.fulfillment.R;
 import com.activityrez.fulfillment.core.ArezApi;
+import com.activityrez.fulfillment.events.AllIn;
 import com.activityrez.fulfillment.events.NavStatus;
 import com.activityrez.fulfillment.events.SearchEvent;
 import com.activityrez.fulfillment.events.ValidTicket;

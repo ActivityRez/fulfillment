@@ -119,6 +119,14 @@ public final class CameraManager {
             @Override
             public void surfaceDestroyed(SurfaceHolder holder) {
                 Log.i("lifecycle","surface destroyed");
+
+                if (camera != null) {
+                    camera.stopPreview();
+                    camera.setPreviewCallback(null);
+                    camera.release();
+                    camera = null;
+                }
+
                 hasSurface = false;
                 stopPreview();
                 closeDriver();
@@ -253,6 +261,7 @@ public final class CameraManager {
         Log.i("lifecycle","preview started [" + (camera == null?"null":"not null") + "]");
         if(camera == null) return;
         if(!previewing){
+
             camera.startPreview();
             previewing = true;
 
@@ -438,8 +447,14 @@ public final class CameraManager {
 
                 @Override
                 public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
-
+                    if (camera != null) {
+                        camera.stopPreview();
+                        camera.setPreviewCallback(null);
+                        camera.release();
+                        camera = null;
+                    }
                 }
+
             });
         } else {
             camera.takePicture(null,_callback,null);

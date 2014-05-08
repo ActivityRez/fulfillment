@@ -30,6 +30,7 @@ public class Ticket extends Model {
     protected String activity_time = "";
     protected String activity_timezone_abbreviation = "";
     protected String comments = "";
+    protected boolean comment_visible = false;
     protected int checkin_status = 0;
     protected GuestOverview[] guest_info;
 
@@ -53,8 +54,6 @@ public class Ticket extends Model {
 
             f.set(this,val);
 
-            this.setChanged();
-            this.notifyObservers();
         } catch(NoSuchFieldException e){
             Log.e("model","field [" + field + "] does not exist");
         } catch(IllegalAccessException e){
@@ -63,9 +62,12 @@ public class Ticket extends Model {
     }
 
     @Subscribe public void onAllIn(AllIn a){
+
         if((Integer)get("checkin_status")!= 0)
             return;
         set("checkin_status", 1);
+        this.setChanged();
+        this.notifyObservers();
     }
 
 }

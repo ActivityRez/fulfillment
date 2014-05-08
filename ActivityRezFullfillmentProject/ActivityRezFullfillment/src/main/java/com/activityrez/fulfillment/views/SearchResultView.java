@@ -39,22 +39,16 @@ public class SearchResultView extends ViewModel {
     private LayoutInflater inflater;
     InputMethodManager inputMethodManager;
 
-    public SearchResultView(View v, final int i, final Ticket m, final ArrayList<Boolean> cviews){
+    public SearchResultView(View v, Ticket m){
         super(v,m);
+    }
 
-        CustomText text = (CustomText) v.findViewById(R.id.guestName);
-        text.setText(((String) m.get("first_name")+(String)" "+(String) m.get("last_name")).trim());
-        CustomText type = (CustomText) v.findViewById(R.id.guest_title);
-        type.setText((String) m.get("guest_type"));
-        CustomText act = (CustomText) v.findViewById(R.id.activity_name);
-        act.setText((String) m.get("activity_name"));
-        CustomText vouch = (CustomText) v.findViewById(R.id.voucher_id);
-        vouch.setText(m.get("sale_id").toString()+"-"+m.get("activity_id").toString());
-        CustomText notes = (CustomText) v.findViewById(R.id.guest_notes);
-        notes.setText((String)m.get("comments"));
+    public void init() {
+        View v = getView();
+        final Ticket m = (Ticket) getModel();
 
         inputMethodManager = (InputMethodManager) ARContainer.context.getSystemService(Context.INPUT_METHOD_SERVICE);
-        final int ck = (Integer)(m.get("checkin_status"));
+
         final CheckBox check = (CheckBox) v.findViewById(R.id.checkbox1);
         final ImageButton cb = (ImageButton) v.findViewById(R.id.comment_button);
         final View cv = v.findViewById(R.id.guest_notes);
@@ -70,15 +64,70 @@ public class SearchResultView extends ViewModel {
             @Override
             public void onClick(View view) {
                 try {
-                    com.activityrez.fulfillment.models.SearchEntry m = new SearchEntry();
-                    m.set("sale_id",getModel().get("sale_id"));
-                    ARContainer.bus.post(new SearchEvent(m));
+                    com.activityrez.fulfillment.models.SearchEntry mo = new SearchEntry();
+                    mo.set("sale_id",getModel().get("sale_id"));
+                    ARContainer.bus.post(new SearchEvent(mo));
                 } catch(Exception e){}
             }
         });
 
+        check.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Log.i("click","Click!! "+check.isChecked() );
+                if( check.isChecked() ) {
+                    getModel().set("checkin_status", 1);
+                } else {
+                    getModel().set("checkin_status", 0);
+                }
+            }
+        });
+
+        cb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if( ((String)m.get("comments")).length() > 0 ) {
+                    if( !( (Boolean) (m.get("comment_visible")) ) ) {
+                        getModel().set("comment_visible", true);
+                        cb.setImageResource(R.drawable.comment_s);
+                        cv.setVisibility(View.VISIBLE);
+                    } else {
+                        getModel().set("comment_visible", false);
+                        cb.setImageResource(R.drawable.comment_a);
+                        cv.setVisibility(View.GONE);
+                    }
+                }
+            }
+        });
+    }
+
+    @Override
+    public void update(Observable observable, Object data) {
+        View v = getView();
+        Ticket m = (Ticket) getModel();
+
+        CustomText text = (CustomText) v.findViewById(R.id.guestName);
+        text.setText(((String) m.get("first_name")+(String)" "+(String) m.get("last_name")).trim());
+        CustomText type = (CustomText) v.findViewById(R.id.guest_title);
+        type.setText((String) m.get("guest_type"));
+        CustomText act = (CustomText) v.findViewById(R.id.activity_name);
+        act.setText((String) m.get("activity_name"));
+        CustomText vouch = (CustomText) v.findViewById(R.id.voucher_id);
+        vouch.setText(m.get("sale_id").toString()+"-"+m.get("activity_id").toString());
+        CustomText notes = (CustomText) v.findViewById(R.id.guest_notes);
+        notes.setText((String)m.get("comments"));
+        CheckBox check = (CheckBox) v.findViewById(R.id.checkbox1);
+        int ck = (Integer)(m.get("checkin_status"));
+        ImageButton cb = (ImageButton) v.findViewById(R.id.comment_button);
+        View cv = v.findViewById(R.id.guest_notes);
+
+        if( ck ==1 )
+            check.setChecked(true);
+        else
+            check.setChecked(false);
+
         if( ((String)m.get("comments")).length() > 0 ){
-            if( !cviews.get(i) ) {
+            if( !( (Boolean) (m.get("comment_visible")) ) ) {
                 cb.setImageResource(R.drawable.comment_a);
                 cv.setVisibility(View.GONE);
             } else {
@@ -89,49 +138,6 @@ public class SearchResultView extends ViewModel {
             cb.setImageResource(R.drawable.comment_d);
             cv.setVisibility(View.GONE);
         }
-        cb.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-            if( ((String)m.get("comments")).length() > 0 ) {
-                if( !cviews.get(i) ) {
-                    cviews.set(i, true);
-                    cb.setImageResource(R.drawable.comment_s);
-                    cv.setVisibility(View.VISIBLE);
-                } else {
-                    cviews.set(i, false);
-                    cb.setImageResource(R.drawable.comment_a);
-                    cv.setVisibility(View.GONE);
-                }
-            }
-            }
-        });
-
-        if( ck ==1 )
-            check.setChecked(true);
-        else
-            check.setChecked(false);
-        check.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                // NOTE!! the original checkin_status ... 0: not yet, 1: checked in, 2: no shown (NOT true/false)
-                if( ((CheckBox) v.findViewById(R.id.checkbox1)).isChecked() ) {
-                    last_checked = 0;
-                    getModel().set("checkin_status", 1);
-                } else { // will see "no shown" sooner/later
-                    last_checked = 1;
-                    getModel().set("checkin_status", 0);
-                }
-            }
-         });
     }
-
-    @Override
-    public void update(Observable observable, Object data) {
-        View v = getView();
-        try{
-            ( (BaseAdapter) ( (ListView)v.getParent() ).getAdapter() ).notifyDataSetChanged();
-        } catch(Exception e) {}
-    }
-
 
 }
