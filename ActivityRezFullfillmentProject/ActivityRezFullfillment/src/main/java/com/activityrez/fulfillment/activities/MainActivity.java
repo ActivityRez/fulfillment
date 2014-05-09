@@ -77,7 +77,8 @@ public class MainActivity extends RoboActivity {
         ARContainer.bus.register(this);
         if((Integer)auth.getUser().get("id") == 0){
             ARContainer.bus.post(new NavStatus(NavStatus.State.LOGIN));
-        } else if(state == NavStatus.State.DEFAULT){
+//        } else if(state == NavStatus.State.DEFAULT){
+        } else {
             ARContainer.bus.post(new NavStatus(NavStatus.State.SCANNING));
         }
     }

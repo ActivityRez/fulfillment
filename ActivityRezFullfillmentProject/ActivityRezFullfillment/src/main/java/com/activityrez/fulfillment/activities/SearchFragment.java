@@ -40,6 +40,7 @@ public class SearchFragment extends Fragment {
     private NavStatus.State state = NavStatus.State.DEFAULT;
     private Ticket t;
     private View _v;
+    private SearchAdapter s;
 
     public SearchFragment(){
         RoboGuice.getInjector(ARContainer.context).injectMembers(this);
@@ -56,7 +57,7 @@ public class SearchFragment extends Fragment {
                 results.add(_r);
             } catch(Exception e){}
         }
-        SearchAdapter s = new SearchAdapter(results);
+        s = new SearchAdapter(results);
         ((ListView) _v.findViewById(R.id.listview)).setAdapter(s);
         return _v;
     }
@@ -65,6 +66,9 @@ public class SearchFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         ((ListView) _v.findViewById(R.id.listview)).setAdapter(null);
+
+        results.clear();
+
         Log.i("called","destroyed SearchFragment Adapter");
     }
 
@@ -104,7 +108,7 @@ public class SearchFragment extends Fragment {
                                     _t.hydrate(list.get(ni), true);
                                     results.add(_t);
                                 }
-                                SearchAdapter s = new SearchAdapter(results);
+                                s = new SearchAdapter(results);
                                 ListView list_v = (ListView) _v.findViewById(R.id.listview);
                                 list_v.setAdapter(s);
                                 s.notifyDataSetChanged();
@@ -145,7 +149,7 @@ public class SearchFragment extends Fragment {
         if(ns.state != NavStatus.State.SEARCHING){
             t = null;
         } else {
-            SearchAdapter s = new SearchAdapter(results);
+            s = new SearchAdapter(results);
             ((ListView) getView().findViewById(R.id.listview)).setAdapter(s);
         }
         if(ns.state == NavStatus.State.SEARCHING && t != null){
@@ -173,9 +177,8 @@ public class SearchFragment extends Fragment {
                                 _t.hydrate(list.get(ni),true);
                                 results.add(_t);
                             }
-                            SearchAdapter s = new SearchAdapter(results);
+                            s = new SearchAdapter(results);
 
-                            Log.i("monitor","coming!");
                             ListView list_v = (ListView) _v.findViewById(R.id.listview);
                             list_v.setAdapter(s);
                             s.notifyDataSetChanged();
@@ -191,6 +194,17 @@ public class SearchFragment extends Fragment {
                 onError();
             }
         }
+    }
+
+    @Subscribe public void onAllIn(AllIn a){
+        Ticket m;
+        Log.i("results size",""+results.size());
+        for(int ni = 0; ni < results.size(); ni++) {
+            m = results.get(ni);
+            if( m == null || (Integer) m.get("checkin_status") != 0 ) continue;
+            m.set("checkin_status", 1);
+        }
+        s.notifyDataSetChanged();
     }
 
     private void onSuccess(){

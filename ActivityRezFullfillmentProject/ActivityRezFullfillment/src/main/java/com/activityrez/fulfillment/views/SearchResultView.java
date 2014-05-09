@@ -74,7 +74,6 @@ public class SearchResultView extends ViewModel {
         check.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                Log.i("click","Click!! "+check.isChecked() );
                 if( check.isChecked() ) {
                     getModel().set("checkin_status", 1);
                 } else {

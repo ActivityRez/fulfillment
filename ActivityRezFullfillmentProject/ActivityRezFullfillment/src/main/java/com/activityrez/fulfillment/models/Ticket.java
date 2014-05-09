@@ -37,8 +37,6 @@ public class Ticket extends Model {
     public void set(String field, Object val){
         if(field == "checkin_status" && checkin_status != (Integer)val){
 
-            Log.i("update","go");
-
             JSONObject params = new JSONObject();
             try {
                 params.put("id",get("id"));
@@ -60,14 +58,4 @@ public class Ticket extends Model {
             Log.e("model","field [" + field + "] cannot be accessed");
         }
     }
-
-    @Subscribe public void onAllIn(AllIn a){
-
-        if((Integer)get("checkin_status")!= 0)
-            return;
-        set("checkin_status", 1);
-        this.setChanged();
-        this.notifyObservers();
-    }
-
 }
