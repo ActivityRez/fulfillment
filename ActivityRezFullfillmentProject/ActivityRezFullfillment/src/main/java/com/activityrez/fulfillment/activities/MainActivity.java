@@ -48,6 +48,7 @@ public class MainActivity extends RoboActivity {
     private CaptureFragment capfrag;
     private SplashFragment splashfrag;
     private SearchFragment searchfrag;
+    private NavFragment navfrag;
     private RelativeLayout mainLayout;
     InputMethodManager inputMethodManager;
 
@@ -82,7 +83,7 @@ public class MainActivity extends RoboActivity {
         }
 
         searchfrag = (SearchFragment) getFragmentManager().findFragmentById((R.id.search_stuff));
-
+        navfrag = (NavFragment) getFragmentManager().findFragmentById((R.id.nav_fragment));
     }
 
     @Override
@@ -93,6 +94,12 @@ public class MainActivity extends RoboActivity {
             getFragmentManager().beginTransaction().remove(searchfrag).commit();
             searchfrag = null;
             Log.i("called","destroyed SearchFragment");
+        }
+
+        if( navfrag != null ) {
+            getFragmentManager().beginTransaction().remove(navfrag).commit();
+            navfrag = null;
+            Log.i("called","destroyed NavFragment");
         }
 
         ARContainer.bus.unregister(this);

@@ -41,6 +41,18 @@ public class NavFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        ARContainer.bus.register(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        ARContainer.bus.unregister(this);
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         navView = null;
