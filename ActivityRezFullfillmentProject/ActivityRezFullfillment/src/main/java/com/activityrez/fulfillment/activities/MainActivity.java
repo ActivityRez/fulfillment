@@ -77,16 +77,26 @@ public class MainActivity extends RoboActivity {
         ARContainer.bus.register(this);
         if((Integer)auth.getUser().get("id") == 0){
             ARContainer.bus.post(new NavStatus(NavStatus.State.LOGIN));
-//        } else if(state == NavStatus.State.DEFAULT){
-        } else {
+        } else if(state == NavStatus.State.DEFAULT){
             ARContainer.bus.post(new NavStatus(NavStatus.State.SCANNING));
         }
+
+        searchfrag = (SearchFragment) getFragmentManager().findFragmentById((R.id.search_stuff));
+
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+
+        if( searchfrag != null ) {
+            getFragmentManager().beginTransaction().remove(searchfrag).commit();
+            searchfrag = null;
+            Log.i("called","destroyed SearchFragment");
+        }
+
         ARContainer.bus.unregister(this);
+
         if(capfrag != null){
             FragmentTransaction ft = getFragmentManager().beginTransaction();
             ft.remove(capfrag);

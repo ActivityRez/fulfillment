@@ -1,6 +1,7 @@
 package com.activityrez.fulfillment.activities;
 
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -44,7 +45,6 @@ public class SearchFragment extends Fragment {
 
     public SearchFragment(){
         RoboGuice.getInjector(ARContainer.context).injectMembers(this);
-        ARContainer.bus.register(this);
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -60,6 +60,19 @@ public class SearchFragment extends Fragment {
         s = new SearchAdapter(results);
         ((ListView) _v.findViewById(R.id.listview)).setAdapter(s);
         return _v;
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ARContainer.bus.register(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        ARContainer.bus.unregister(this);
     }
 
     @Override
