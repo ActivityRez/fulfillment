@@ -82,14 +82,14 @@ public class MainActivity extends RoboActivity {
             ARContainer.bus.post(new NavStatus(NavStatus.State.SCANNING));
         }
 
-        searchfrag = (SearchFragment) getFragmentManager().findFragmentById((R.id.search_stuff));
-        navfrag = (NavFragment) getFragmentManager().findFragmentById((R.id.nav_fragment));
+//        searchfrag = (SearchFragment) getFragmentManager().findFragmentById((R.id.search_stuff));
+//        navfrag = (NavFragment) getFragmentManager().findFragmentById((R.id.nav_fragment));
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-
+/*
         if( searchfrag != null ) {
             getFragmentManager().beginTransaction().remove(searchfrag).commit();
             searchfrag = null;
@@ -101,7 +101,7 @@ public class MainActivity extends RoboActivity {
             navfrag = null;
             Log.i("called","destroyed NavFragment");
         }
-
+*/
         ARContainer.bus.unregister(this);
 
         if(capfrag != null){
@@ -136,7 +136,10 @@ public class MainActivity extends RoboActivity {
     @Subscribe public void onNavStatus(NavStatus n){
         Log.i("loaded state",n.state.toString());
         Log.i("old state",state.toString());
-        if(state == n.state) return;
+        if(state == n.state) {
+            Log.i("monitor","returning!!");
+            return;
+        }
 
         FragmentManager fm = getFragmentManager();
         AnimatorSet as = new AnimatorSet();

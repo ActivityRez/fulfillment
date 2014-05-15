@@ -90,60 +90,62 @@ public class SearchFragment extends Fragment {
 
         _v.findViewById(R.id.search_error).setVisibility(View.GONE);
 
-        if( results.size() > 0 ) results.clear();
+        if( ((String)se.data.get("sale_id")).length() >0 || ((String)se.data.get("phone")).length() >0 || ((String)se.data.get("email")).length() >0 || ((String)se.data.get("name")).length() >0  ) {
 
-        JSONObject params = new JSONObject();
-        try {
-            params.put("sale", se.data.get("sale_id"));
-            params.put("phone", se.data.get("phone"));
-            params.put("email", se.data.get("email"));
-            params.put("guest", se.data.get("name"));
-            params.put("showCXL", "false");
-            Log.i("params", " " + params);
+            if( results.size() > 0 ) results.clear();
 
-            api.request(Request.Method.GET, "ticket/search", params, new Response.Listener<JSONObject>() {
-                        @Override
-                        public void onResponse(JSONObject ret) {
-                            try {
-                                if (ret.getInt("status") == -1) {
-                                    onError();
-                                    return;
+            JSONObject params = new JSONObject();
+            try {
+                params.put("sale", se.data.get("sale_id"));
+                params.put("phone", se.data.get("phone"));
+                params.put("email", se.data.get("email"));
+                params.put("guest", se.data.get("name"));
+                params.put("showCXL", "false");
+                Log.i("params", " " + params);
+
+                api.request(Request.Method.GET, "ticket/search", params, new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject ret) {
+                                try {
+                                    if (ret.getInt("status") == -1) {
+                                        onError();
+                                        return;
+                                    }
+                                    JSONArray list = (JSONArray) ret.get("results");
+                                    if (list.length() == 0) {
+                                        onError();
+                                        return;
+                                    }
+
+                                    for (int ni = 0; ni < list.length(); ni++) {
+
+                                        Ticket _t = new Ticket();
+                                        _t.hydrate(list.get(ni), true);
+                                        results.add(_t);
+                                    }
+                                    s = new SearchAdapter(results);
+                                    ListView list_v = (ListView) _v.findViewById(R.id.listview);
+                                    list_v.setAdapter(s);
+                                    s.notifyDataSetChanged();
+                                    _v.findViewById(R.id.search_wrap).setVisibility(View.VISIBLE);
+
+                                    onSuccess();
+                                } catch (Exception e) {
+                                    Log.e("ERRORS", e.toString());
                                 }
-                                JSONArray list = (JSONArray) ret.get("results");
-                                if( list.length()==0 ){
-                                    onError();
-                                    return;
-                                }
-
-                                for (int ni = 0; ni < list.length(); ni++) {
-
-                                    Ticket _t = new Ticket();
-                                    _t.hydrate(list.get(ni), true);
-                                    results.add(_t);
-                                }
-                                s = new SearchAdapter(results);
-                                ListView list_v = (ListView) _v.findViewById(R.id.listview);
-                                list_v.setAdapter(s);
-                                s.notifyDataSetChanged();
-                                _v.findViewById(R.id.search_wrap).setVisibility(View.VISIBLE);
-
-                                onSuccess();
-                            } catch (Exception e) {
-                                Log.e("ERRORS", e.toString());
+                            }
+                        }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError volleyError) {
+                                onError();
                             }
                         }
-                    }, new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError volleyError) {
-                            onError();
-                        }
-                    }
-            );
-        } catch(Exception e){
-            onError();
-            Log.e("ERRORS", e.toString());
+                );
+            } catch (Exception e) {
+                onError();
+                Log.e("ERRORS", e.toString());
+            }
         }
-
     }
     @Subscribe public void onValidTicket(ValidTicket v){
         t = v.ticket;
@@ -172,6 +174,10 @@ public class SearchFragment extends Fragment {
                 params.put("activity", "" + t.get("root_activity_id"));
                 params.put("showCXL", "false");
                 Log.i("params"," "+params);
+
+                Log.i("old nav state",state.toString());
+                Log.i("new nav state",""+NavStatus.State.SEARCHING);
+
                 api.request(Request.Method.GET, "ticket/search", params, new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject ret) {
@@ -224,6 +230,7 @@ public class SearchFragment extends Fragment {
         getView().findViewById(R.id.search_error).setVisibility(View.GONE);
     }
     private void onError(){
+
         getView().findViewById(R.id.search_error).setVisibility(View.VISIBLE);
     }
 }
