@@ -90,18 +90,6 @@ public class MainActivity extends RoboActivity {
     protected void onPause() {
         super.onPause();
 
-        if( searchfrag != null ) {
-            getFragmentManager().beginTransaction().remove(searchfrag).commit();
-            searchfrag = null;
-            Log.i("called","destroyed SearchFragment");
-        }
-
-        if( navfrag != null ) {
-            getFragmentManager().beginTransaction().remove(navfrag).commit();
-            navfrag = null;
-            Log.i("called","destroyed NavFragment");
-        }
-
         ARContainer.bus.unregister(this);
 
         if(capfrag != null){
@@ -110,6 +98,23 @@ public class MainActivity extends RoboActivity {
             ft.commit();
             capfrag = null;
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        if( searchfrag != null ) {
+            getFragmentManager().beginTransaction().remove(searchfrag).commit();
+            searchfrag = null;
+            Log.i("called","destroyed SearchFragment");
+        }
+        if( navfrag != null ) {
+            getFragmentManager().beginTransaction().remove(navfrag).commit();
+            navfrag = null;
+            Log.i("called","destroyed NavFragment");
+        }
+
     }
 
     @Override
