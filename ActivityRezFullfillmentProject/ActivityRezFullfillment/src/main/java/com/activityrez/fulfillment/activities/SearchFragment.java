@@ -152,14 +152,17 @@ public class SearchFragment extends Fragment {
     }
     @Subscribe public void onNavStateChange(NavStatus ns){
 
+        Log.i("old nav state",state.toString());
+        Log.i("new nav state",ns.state.toString());
+
+        if(results.size() > 0) {
+            results.clear();
+        }
+
         if( state == ns.state ) return;
-        state = ns.state;
         if( getView() == null ) return;
 
         _v.findViewById(R.id.search_error).setVisibility(View.GONE);
-
-        if(results.size() > 0)
-            results.clear();
 
         if(ns.state != NavStatus.State.SEARCHING){
             t = null;
@@ -167,16 +170,13 @@ public class SearchFragment extends Fragment {
             s = new SearchAdapter(results);
             ((ListView) getView().findViewById(R.id.listview)).setAdapter(s);
         }
-        if(ns.state == NavStatus.State.SEARCHING && t != null){
+        if(ns.state == NavStatus.State.SEARCHING && state != NavStatus.State.SEARCHING && t != null){
             JSONObject params = new JSONObject();
             try {
                 params.put("sale", "" + t.get("sale_id"));
                 params.put("activity", "" + t.get("root_activity_id"));
                 params.put("showCXL", "false");
                 Log.i("params"," "+params);
-
-                Log.i("old nav state",state.toString());
-                Log.i("new nav state",""+NavStatus.State.SEARCHING);
 
                 api.request(Request.Method.GET, "ticket/search", params, new Response.Listener<JSONObject>() {
                     @Override
@@ -212,6 +212,7 @@ public class SearchFragment extends Fragment {
             } catch(Exception e){
                 onError();
             }
+            state = ns.state;
         }
     }
 
@@ -230,7 +231,6 @@ public class SearchFragment extends Fragment {
         getView().findViewById(R.id.search_error).setVisibility(View.GONE);
     }
     private void onError(){
-
         getView().findViewById(R.id.search_error).setVisibility(View.VISIBLE);
     }
 }
