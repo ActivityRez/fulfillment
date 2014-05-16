@@ -170,7 +170,7 @@ public class SearchFragment extends Fragment {
             s = new SearchAdapter(results);
             ((ListView) getView().findViewById(R.id.listview)).setAdapter(s);
         }
-        if(ns.state == NavStatus.State.SEARCHING && state != NavStatus.State.SEARCHING && t != null){
+        if(ns.state == NavStatus.State.SEARCHING && t != null){
             JSONObject params = new JSONObject();
             try {
                 params.put("sale", "" + t.get("sale_id"));
@@ -212,8 +212,8 @@ public class SearchFragment extends Fragment {
             } catch(Exception e){
                 onError();
             }
-            state = ns.state;
         }
+        state = ns.state;
     }
 
     @Subscribe public void onAllIn(AllIn a){
