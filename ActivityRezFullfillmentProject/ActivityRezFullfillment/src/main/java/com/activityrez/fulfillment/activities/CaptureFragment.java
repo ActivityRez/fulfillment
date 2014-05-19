@@ -19,6 +19,8 @@ import com.activityrez.fulfillment.R;
 import com.activityrez.fulfillment.camera.CameraManager;
 import com.google.inject.Inject;
 
+import java.io.IOException;
+
 import roboguice.RoboGuice;
 
 /**
@@ -38,6 +40,9 @@ public class CaptureFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        try {
+            cameraManager.openDriver();
+        } catch(IOException e){}
         cameraManager.startPreview();
     }
 
@@ -56,5 +61,6 @@ public class CaptureFragment extends Fragment {
     public void onPause() {
         super.onPause();
         cameraManager.stopPreview();
+        cameraManager.closeDriver();
     }
 }

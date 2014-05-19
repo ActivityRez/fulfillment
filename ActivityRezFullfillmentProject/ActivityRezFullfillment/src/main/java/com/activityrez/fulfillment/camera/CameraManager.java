@@ -33,6 +33,7 @@ import com.google.inject.Singleton;
 import com.google.zxing.PlanarYUVLuminanceSource;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * This object wraps the Camera service object and expects to be the only one talking to it. The
@@ -138,13 +139,14 @@ public final class CameraManager {
         if(camera == null)
             return;
 
-        Rect r = surface.getSurfaceFrame();
-        int width = r.width();
-        int height = r.height();
-
         Camera.Parameters parameters = camera.getParameters();
         Camera.CameraInfo info = new Camera.CameraInfo();
         Camera.getCameraInfo(0,info);
+
+        List<Camera.Size> sizes = parameters.getSupportedPreviewSizes();
+        Camera.Size cs = sizes.get(0);
+        int width = cs.width;
+        int height = cs.height;
 
         int rotation = ((WindowManager)ARContainer.context.getSystemService(ARContainer.context.WINDOW_SERVICE)).getDefaultDisplay().getRotation();
         switch(info.orientation){
