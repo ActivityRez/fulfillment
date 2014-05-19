@@ -56,7 +56,6 @@ public class NavFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         navView = null;
-        Log.i("called","destroyed NavFragment navView");
     }
 
     @Subscribe public void onNavStatus(NavStatus n){

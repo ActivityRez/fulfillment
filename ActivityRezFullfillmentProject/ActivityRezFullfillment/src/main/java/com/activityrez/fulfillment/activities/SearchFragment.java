@@ -159,7 +159,7 @@ public class SearchFragment extends Fragment {
             results.clear();
         }
 
-        if( state == ns.state ) return;
+        if( state.toString() == ns.state.toString() ) return;
         if( getView() == null ) return;
 
         _v.findViewById(R.id.search_error).setVisibility(View.GONE);
