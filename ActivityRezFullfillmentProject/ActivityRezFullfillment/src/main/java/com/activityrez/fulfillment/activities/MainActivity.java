@@ -81,27 +81,12 @@ public class MainActivity extends RoboActivity {
         } else if(state == NavStatus.State.DEFAULT){
             ARContainer.bus.post(new NavStatus(NavStatus.State.SCANNING));
         }
-
-//        searchfrag = (SearchFragment) getFragmentManager().findFragmentById((R.id.search_stuff));
-//        navfrag = (NavFragment) getFragmentManager().findFragmentById((R.id.nav_fragment));
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-/*
-        if( searchfrag != null ) {
-            getFragmentManager().beginTransaction().remove(searchfrag).commit();
-            searchfrag = null;
-            Log.i("called","destroyed SearchFragment");
-        }
 
-        if( navfrag != null ) {
-            getFragmentManager().beginTransaction().remove(navfrag).commit();
-            navfrag = null;
-            Log.i("called","destroyed NavFragment");
-        }
-*/
         ARContainer.bus.unregister(this);
 
         if(capfrag != null){
@@ -137,7 +122,6 @@ public class MainActivity extends RoboActivity {
         Log.i("loaded state",n.state.toString());
         Log.i("old state",state.toString());
         if(state == n.state) {
-            Log.i("monitor","returning!!");
             return;
         }
 

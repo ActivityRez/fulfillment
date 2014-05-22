@@ -101,9 +101,10 @@ public class Login extends Model {
                                 set("error", jsonObject.getString("msg"));
                                 return;
                             }
-
+                            auth.setUser(new User());
                             set("show", true);
                         } catch (JSONException e) {
+                            Log.e("log out error",""+e);
                         }
                     }
                 }, new Response.ErrorListener() {

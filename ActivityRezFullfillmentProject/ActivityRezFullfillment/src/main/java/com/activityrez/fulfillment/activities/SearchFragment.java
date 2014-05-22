@@ -81,12 +81,9 @@ public class SearchFragment extends Fragment {
         ((ListView) _v.findViewById(R.id.listview)).setAdapter(null);
 
         results.clear();
-
-        Log.i("called","destroyed SearchFragment Adapter");
     }
 
     @Subscribe public void onSearchEvent(SearchEvent se){
-        Log.i("SearchEvent",""+se);
 
         _v.findViewById(R.id.search_error).setVisibility(View.GONE);
 

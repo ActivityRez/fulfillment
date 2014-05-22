@@ -167,12 +167,14 @@ public final class CameraManager {
             camera.setDisplayOrientation(90);
             parameters.setPreviewSize(height, width);
         } else if(rotation == Surface.ROTATION_0){
+//            camera.setDisplayOrientation(0);
             camera.setDisplayOrientation(180);
             parameters.setPreviewSize(width, height);
         } else if(rotation == Surface.ROTATION_270){
             camera.setDisplayOrientation(270);
             parameters.setPreviewSize(width, height);
         } else if(rotation == Surface.ROTATION_180){
+//            camera.setDisplayOrientation(180);
             camera.setDisplayOrientation(0);
             parameters.setPreviewSize(height, width);
         }

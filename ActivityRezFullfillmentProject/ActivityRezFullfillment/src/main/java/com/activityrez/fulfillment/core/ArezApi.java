@@ -23,7 +23,7 @@ import roboguice.RoboGuice;
 public class ArezApi {
     @Inject AuthModule auth;
 
-    private static final String BASE_URL = "https://demo.activityrez.com/ar3/api/";
+    private static final String BASE_URL = "https://demo.activityrez.com/ar-core/api/";
     private static final String OLD_BASE_URL = "https://staging.activityrez.com/wp-content/plugins/flash-api/wsrv.php";
     private RequestQueue queue;
 

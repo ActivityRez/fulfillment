@@ -30,6 +30,12 @@ public class NavFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//        ARContainer.bus.register(this);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
         ARContainer.bus.register(this);
     }
 
@@ -44,12 +50,16 @@ public class NavFragment extends Fragment {
     public void onResume() {
         super.onResume();
         ARContainer.bus.register(this);
+        NavState ns = (NavState) navView.getModel();
+        ARContainer.bus.register(ns);
     }
 
     @Override
     public void onPause() {
         super.onPause();
         ARContainer.bus.unregister(this);
+        NavState ns = (NavState) navView.getModel();
+        ARContainer.bus.unregister(ns);
     }
 
     @Override
@@ -71,7 +81,8 @@ public class NavFragment extends Fragment {
         } else if(ns.get("state") == NavStatus.State.SCANNING){
             moveLeft();
         }
-        ns.set("state",n.state);
+
+        ns.set("state", n.state);
     }
     //@Subscribe public void onQRCodeFound(QRCodeFound)
 

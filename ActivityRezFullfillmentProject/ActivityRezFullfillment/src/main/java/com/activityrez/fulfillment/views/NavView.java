@@ -97,6 +97,9 @@ public class NavView extends ViewModel {
         final View v = getView();
         CustomText status = (CustomText)getView().findViewById(R.id.scan_status);
 
+        Log.i("monitor n",""+ n.get("state"));
+        Log.i("monitor observable",""+ observable.get("state"));
+
         if(n.get("state") == NavStatus.State.SEARCHING){
             bottomButton.setText("scan");
             bottomButton.setVisibility(View.VISIBLE);
