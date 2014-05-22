@@ -40,7 +40,7 @@ public class CaptureFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        ARContainer.bus.register(this);
+//        ARContainer.bus.register(this);
         try {
             cameraManager.openDriver();
         } catch(IOException e){}
@@ -63,6 +63,6 @@ public class CaptureFragment extends Fragment {
         super.onPause();
         cameraManager.stopPreview();
         cameraManager.closeDriver();
-        ARContainer.bus.unregister(this);
+//        ARContainer.bus.unregister(this);
     }
 }
