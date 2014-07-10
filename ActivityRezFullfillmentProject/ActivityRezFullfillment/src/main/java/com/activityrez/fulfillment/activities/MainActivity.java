@@ -67,7 +67,7 @@ public class MainActivity extends RoboActivity {
         getFragmentManager().addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
             @Override
             public void onBackStackChanged() {
-                Log.i(TAG, "someone pushed the back button.. that faggot");
+                // Log.i(TAG, "someone pushed the back button.. that faggot");
             }
         });
     }
@@ -119,8 +119,8 @@ public class MainActivity extends RoboActivity {
         cameraManager.stopPreview();
     }
     @Subscribe public void onNavStatus(NavStatus n){
-        Log.i("loaded state",n.state.toString());
-        Log.i("old state",state.toString());
+        // Log.i("loaded state",n.state.toString());
+        // Log.i("old state",state.toString());
         if(state == n.state) {
             return;
         }
@@ -192,7 +192,7 @@ public class MainActivity extends RoboActivity {
                 da.setInterpolator(inter);
                 bs.with(da);
             } else if(state == NavStatus.State.LOGIN){
-                Log.i("Login","after log out?");
+                // Log.i("Login","after log out?");
                 View dv = fm.findFragmentById(R.id.the_splasher).getView();
                 ObjectAnimator da = ObjectAnimator.ofInt(dv, "xFraction", 0, width);
                 da.setInterpolator(inter);

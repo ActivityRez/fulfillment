@@ -98,7 +98,7 @@ public class SearchFragment extends Fragment {
                 params.put("email", se.data.get("email"));
                 params.put("guest", se.data.get("name"));
                 params.put("showCXL", "false");
-                Log.i("params", " " + params);
+                //Log.i("params", " " + params);
 
                 api.request(Request.Method.GET, "ticket/search", params, new Response.Listener<JSONObject>() {
                             @Override
@@ -128,7 +128,7 @@ public class SearchFragment extends Fragment {
 
                                     onSuccess();
                                 } catch (Exception e) {
-                                    Log.e("ERRORS", e.toString());
+                                    //Log.e("ERRORS", e.toString());
                                 }
                             }
                         }, new Response.ErrorListener() {
@@ -140,7 +140,7 @@ public class SearchFragment extends Fragment {
                 );
             } catch (Exception e) {
                 onError();
-                Log.e("ERRORS", e.toString());
+                //Log.e("ERRORS", e.toString());
             }
         }
     }
@@ -149,8 +149,8 @@ public class SearchFragment extends Fragment {
     }
     @Subscribe public void onNavStateChange(NavStatus ns){
 
-        Log.i("old nav state",state.toString());
-        Log.i("new nav state",ns.state.toString());
+        //Log.i("old nav state",state.toString());
+        //Log.i("new nav state",ns.state.toString());
 
         if(results.size() > 0) {
             results.clear();
@@ -173,7 +173,7 @@ public class SearchFragment extends Fragment {
                 params.put("sale", "" + t.get("sale_id"));
                 params.put("activity", "" + t.get("root_activity_id"));
                 params.put("showCXL", "false");
-                Log.i("params"," "+params);
+                //Log.i("params"," "+params);
 
                 api.request(Request.Method.GET, "ticket/search", params, new Response.Listener<JSONObject>() {
                     @Override
@@ -215,7 +215,7 @@ public class SearchFragment extends Fragment {
 
     @Subscribe public void onAllIn(AllIn a){
         Ticket m;
-        Log.i("results size",""+results.size());
+        //Log.i("results size",""+results.size());
         for(int ni = 0; ni < results.size(); ni++) {
             m = results.get(ni);
             if( m == null || (Integer) m.get("checkin_status") != 0 ) continue;

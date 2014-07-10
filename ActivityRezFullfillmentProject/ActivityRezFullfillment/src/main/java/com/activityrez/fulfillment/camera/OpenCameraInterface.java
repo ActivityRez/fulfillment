@@ -20,7 +20,7 @@ public final class OpenCameraInterface {
 
         int numCameras = Camera.getNumberOfCameras();
         if (numCameras == 0) {
-            Log.w(TAG, "No cameras!");
+            //Log.w(TAG, "No cameras!");
             return null;
         }
 
@@ -36,10 +36,10 @@ public final class OpenCameraInterface {
 
         Camera camera;
         if (index < numCameras) {
-            Log.i(TAG, "Opening camera #" + index);
+            //Log.i(TAG, "Opening camera #" + index);
             camera = Camera.open(index);
         } else {
-            Log.i(TAG, "No camera facing back; returning camera #0");
+            //Log.i(TAG, "No camera facing back; returning camera #0");
             camera = Camera.open(0);
         }
 

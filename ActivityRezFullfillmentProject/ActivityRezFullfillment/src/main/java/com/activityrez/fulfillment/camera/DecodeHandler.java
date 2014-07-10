@@ -37,7 +37,7 @@ final class DecodeHandler extends Handler {
     DecodeHandler(Map<DecodeHintType,Object> hints) {
         RoboGuice.getInjector(ARContainer.context).injectMembers(this);
 
-        Log.i("lifecycle",hints.toString());
+        //Log.i("lifecycle",hints.toString());
         multiFormatReader = new MultiFormatReader();
         multiFormatReader.setHints(hints);
     }
@@ -83,7 +83,7 @@ final class DecodeHandler extends Handler {
 
         Handler handler = cameraManager.getHandler();
         if (rawResult != null) {
-            Log.i("lifecycle","found something");
+            //Log.i("lifecycle","found something");
             if (handler != null) {
                 Message message = Message.obtain(handler, R.id.decode_succeeded, rawResult);
                 Bundle bundle = new Bundle();

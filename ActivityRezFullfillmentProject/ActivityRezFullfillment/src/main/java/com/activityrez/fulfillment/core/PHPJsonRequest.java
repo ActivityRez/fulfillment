@@ -81,7 +81,7 @@ public class PHPJsonRequest extends Request<JSONObject> {
         try {
             m = (Map<String,String>) _fromJson(mBody);
         } catch(Exception e){
-            Log.i("params","error parsing object");
+            //Log.i("params","error parsing object");
         }
         return m;
     }

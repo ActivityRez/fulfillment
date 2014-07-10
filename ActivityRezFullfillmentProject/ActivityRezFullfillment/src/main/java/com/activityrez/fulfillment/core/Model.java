@@ -39,10 +39,10 @@ public class Model extends Observable {
             f.setAccessible(true);
             return f.get(this);
         } catch(NoSuchFieldException e){
-            Log.e("model","field [" + field + "] does not exist");
+            //Log.e("model","field [" + field + "] does not exist");
             return null;
         } catch(IllegalAccessException e){
-            Log.e("model","field [" + field + "] cannot be accessed");
+            //Log.e("model","field [" + field + "] cannot be accessed");
             return null;
         }
     }
@@ -59,9 +59,9 @@ public class Model extends Observable {
             this.setChanged();
             this.notifyObservers();
         } catch(NoSuchFieldException e){
-            Log.e("model","field [" + field + "] does not exist");
+            //Log.e("model","field [" + field + "] does not exist");
         } catch(IllegalAccessException e){
-            Log.e("model","field [" + field + "] cannot be accessed");
+            //Log.e("model","field [" + field + "] cannot be accessed");
         }
     }
 
@@ -131,7 +131,7 @@ public class Model extends Observable {
                     map.put(f.getName(),f.get(this));
                 }
             }catch(IllegalAccessException e){
-                Log.e("model", "cant touch field [" + f.getName() + "]");
+                //Log.e("model", "cant touch field [" + f.getName() + "]");
             }
         }
         if(!as_json)
@@ -205,7 +205,7 @@ public class Model extends Observable {
                 } else if(type.equals("boolean")){
                     f.set(this,((Boolean)val).booleanValue());
                 } else {
-                    Log.i("unaccounted for type",type);
+                    //Log.i("unaccounted for type",type);
                     f.set(this,val);
                 }
             }

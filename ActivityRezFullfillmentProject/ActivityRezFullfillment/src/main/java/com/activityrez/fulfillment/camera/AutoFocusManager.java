@@ -50,7 +50,7 @@ final class AutoFocusManager implements Camera.AutoFocusCallback {
         useAutoFocus =
                 sharedPrefs.getBoolean(CameraConfig.KEY_AUTO_FOCUS, true) &&
                         FOCUS_MODES_CALLING_AF.contains(currentFocusMode);
-        Log.i(TAG, "Current focus mode '" + currentFocusMode + "'; use auto focus? " + useAutoFocus);
+        //Log.i(TAG, "Current focus mode '" + currentFocusMode + "'; use auto focus? " + useAutoFocus);
         start();
     }
 
@@ -69,7 +69,7 @@ final class AutoFocusManager implements Camera.AutoFocusCallback {
                 camera.autoFocus(this);
             } catch (RuntimeException re) {
                 // Have heard RuntimeException reported in Android 4.0.x+; continue?
-                Log.w(TAG, "Unexpected exception while focusing", re);
+                //Log.w(TAG, "Unexpected exception while focusing", re);
             }
         }
     }
@@ -80,7 +80,7 @@ final class AutoFocusManager implements Camera.AutoFocusCallback {
                 camera.cancelAutoFocus();
             } catch (RuntimeException re) {
                 // Have heard RuntimeException reported in Android 4.0.x+; continue?
-                Log.w(TAG, "Unexpected exception while cancelling focusing", re);
+                //Log.w(TAG, "Unexpected exception while cancelling focusing", re);
             }
         }
         if (outstandingTask != null) {
