@@ -23,8 +23,8 @@ import roboguice.RoboGuice;
 public class ArezApi {
     @Inject AuthModule auth;
 
-    private static final String BASE_URL = "https://demo.activityrez.com/ar-core/api/";
-    private static final String OLD_BASE_URL = "https://staging.activityrez.com/wp-content/plugins/flash-api/wsrv.php";
+    private static final String BASE_URL = "https://secure.activityrez.com/ar-core/api/";
+//    private static final String OLD_BASE_URL = "https://staging.activityrez.com/wp-content/plugins/flash-api/wsrv.php";
     private RequestQueue queue;
 
     @Inject public ArezApi(){
@@ -67,6 +67,7 @@ public class ArezApi {
         queue.add(req);
         return req;
     }
+/*
     public void oldRequest(String service, String action, JSONObject params, Listener<JSONObject> on_success, ErrorListener on_error){
         oldRequest(Method.GET,service,action,params,on_success,on_error);
     }
@@ -102,6 +103,7 @@ public class ArezApi {
         }, on_error);
         queue.add(req);
     }
+*/
 }
 
 

@@ -96,7 +96,7 @@ public class SearchFragment extends Fragment {
                 params.put("sale", se.data.get("sale_id"));
                 params.put("phone", se.data.get("phone"));
                 params.put("email", se.data.get("email"));
-                params.put("guest", se.data.get("name"));
+                params.put("term", se.data.get("name"));
                 params.put("showCXL", "false");
                 //Log.i("params", " " + params);
 
@@ -104,7 +104,8 @@ public class SearchFragment extends Fragment {
                             @Override
                             public void onResponse(JSONObject ret) {
                                 try {
-                                    if (ret.getInt("status") == -1) {
+                                    if (ret.getInt("status") < 1) {
+                                        //Log.i("msg"," "+(JSONArray)ret.get("results"));
                                         onError();
                                         return;
                                     }
@@ -179,7 +180,8 @@ public class SearchFragment extends Fragment {
                     @Override
                     public void onResponse(JSONObject ret) {
                         try {
-                            if(ret.getInt("status") == -1){
+                            if(ret.getInt("status") < 1){
+                                //Log.i("msg"," "+(JSONArray)ret.get("results"));
                                 onError();
                                 return;
                             }
