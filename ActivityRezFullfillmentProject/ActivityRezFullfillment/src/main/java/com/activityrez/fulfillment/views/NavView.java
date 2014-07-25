@@ -57,7 +57,6 @@ public class NavView extends ViewModel {
     protected CustomButton bottomButton;
     private ArrayAdapter<String> a;
     private ArrayList<SoldActivity> activities = new ArrayList<SoldActivity>();
-    private String items[] = {"none"};
 
     public NavView(View v){
         this(v, new NavState(null));
@@ -146,7 +145,7 @@ public class NavView extends ViewModel {
                     params.put("owner", ( (Company)auth.getUser().get("company") ).get("id"));
 
                     api.request(Request.Method.GET, "activity/soldTitles", params, new Response.Listener<JSONObject>() {
-                                @Overridecd 
+                                @Override
                                 public void onResponse(JSONObject ret) {
                                     try {
                                         if (ret.getInt("status") < 1) {
