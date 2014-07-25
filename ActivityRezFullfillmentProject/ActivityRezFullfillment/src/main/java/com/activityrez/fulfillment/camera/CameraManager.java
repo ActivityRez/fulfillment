@@ -160,7 +160,7 @@ public final class CameraManager {
                 rotation = (rotation + Surface.ROTATION_270)%4;
                 break;
         }
-
+/*
         //if(isActive)
         //    stopPreview();
         if(rotation == Surface.ROTATION_90){
@@ -178,7 +178,7 @@ public final class CameraManager {
             camera.setDisplayOrientation(0);
             parameters.setPreviewSize(height, width);
         }
-
+*/
         camera.setParameters(parameters);
         //if(isActive)
         //    startPreview();
