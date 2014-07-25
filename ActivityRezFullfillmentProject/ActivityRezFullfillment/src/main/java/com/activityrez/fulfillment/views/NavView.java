@@ -6,12 +6,15 @@ import android.content.Context;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 
 import com.activityrez.fulfillment.ARContainer;
+import com.activityrez.fulfillment.AuthModule;
 import com.activityrez.fulfillment.CustomButton;
 import com.activityrez.fulfillment.CustomText;
 import com.activityrez.fulfillment.R;
@@ -22,8 +25,10 @@ import com.activityrez.fulfillment.events.AllIn;
 import com.activityrez.fulfillment.events.NavStatus;
 import com.activityrez.fulfillment.events.SearchEvent;
 import com.activityrez.fulfillment.events.ValidTicket;
+import com.activityrez.fulfillment.models.Company;
 import com.activityrez.fulfillment.models.Login;
 import com.activityrez.fulfillment.models.NavState;
+import com.activityrez.fulfillment.models.SoldActivity;
 import com.activityrez.fulfillment.models.Ticket;
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -41,14 +46,18 @@ import java.util.Observable;
  * Created by alex on 10/31/13.
  */
 public class NavView extends ViewModel {
+    @Inject AuthModule auth;
     @Inject ArezApi api;
-    private ArrayList<Ticket> results = new ArrayList<Ticket>();
+
+
     protected LoginView loginView;
     protected SearchEntry searchView;
     protected ImageView logo;
     protected CustomButton topButton;
     protected CustomButton bottomButton;
-    protected MatchedTicket ticket;
+    private ArrayAdapter<String> a;
+    private ArrayList<SoldActivity> activities = new ArrayList<SoldActivity>();
+    private String items[] = {"none"};
 
     public NavView(View v){
         this(v, new NavState(null));
@@ -98,6 +107,7 @@ public class NavView extends ViewModel {
         CustomText status = (CustomText)getView().findViewById(R.id.scan_status);
 
         if(n.get("state") == NavStatus.State.SEARCHING){
+
             bottomButton.setText("scan");
             bottomButton.setVisibility(View.VISIBLE);
             bottomButton.setOnClickListener(new View.OnClickListener() {
@@ -112,18 +122,68 @@ public class NavView extends ViewModel {
             status.setVisibility(View.GONE);
 
             Ticket t = (Ticket)n.get("ticket");
-            if(t != null){
+            if(t != null) {
                 topButton.setVisibility(View.GONE);
                 v.findViewById(R.id.search_wrap).setVisibility(View.GONE);
 
-                ((CustomText)v.findViewById(R.id.activityName)).setText((String)t.get("activity_name"));
-                ((CustomText)v.findViewById(R.id.activityDate)).setText((String)t.get("activity_date"));
-                ((CustomText)v.findViewById(R.id.activityTime)).setText((String)t.get("activity_time"));
-                ((CustomText)v.findViewById(R.id.activityTimeZone)).setText((String)t.get("activity_timezone_abbreviation"));
-                ((CustomText)v.findViewById(R.id.guestName)).setText(((String)t.get("first_name")+(String)" "+(String)t.get("last_name")).trim());
+                ((CustomText) v.findViewById(R.id.activityName)).setText((String) t.get("activity_name"));
+                ((CustomText) v.findViewById(R.id.activityDate)).setText((String) t.get("activity_date"));
+                ((CustomText) v.findViewById(R.id.activityTime)).setText((String) t.get("activity_time"));
+                ((CustomText) v.findViewById(R.id.activityTimeZone)).setText((String) t.get("activity_timezone_abbreviation"));
+                if (((String) t.get("first_name")).length() > 0 || ((String) t.get("last_name")).length() > 0)
+                    ((CustomText) v.findViewById(R.id.guestName)).setText(((String) t.get("first_name") + (String) " " + (String) t.get("last_name")).trim());
+                else
+                    ((CustomText) v.findViewById(R.id.guestName)).setText(((String) t.get("lead_first_name") + (String) " " + (String) t.get("lead_last_name")).trim());
 
                 v.findViewById(R.id.ticketLayout).setVisibility(View.VISIBLE);
             } else {
+
+                a = new ArrayAdapter<String>(ARContainer.context, android.R.layout.simple_spinner_item);
+                a.add("(none)");
+
+                JSONObject params = new JSONObject();
+                try {
+                    params.put("owner", ( (Company)auth.getUser().get("company") ).get("id"));
+
+                    api.request(Request.Method.GET, "activity/soldTitles", params, new Response.Listener<JSONObject>() {
+                                @Overridecd 
+                                public void onResponse(JSONObject ret) {
+                                    try {
+                                        if (ret.getInt("status") < 1) {
+                                            return;
+                                        }
+                                        JSONArray list = (JSONArray) ret.get("results");
+                                        if (list.length() == 0) {
+                                            return;
+                                        }
+
+                                        for (int ni = 0; ni < list.length(); ni++) {
+                                            SoldActivity act = new SoldActivity();
+                                            act.hydrate(list.get(ni), true);
+                                            activities.add(act);
+                                            a.add((String)act.get("name"));
+                                        }
+                                    } catch (Exception e) {
+                                        Log.e("ERRORS", e.toString());
+                                    }
+                                }
+                            }, new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError volleyError) {
+                                }
+                            }
+                    );
+                } catch (Exception e) {
+                    Log.e("ERRORS", e.toString());
+                }
+
+                a.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                Spinner spinner = (Spinner) getView().findViewById(R.id.activity_search);
+                spinner.setPromptId(R.string.activity_prompt);
+                spinner.setAdapter(a);
+
+
+
                 topButton.setText("search");
                 topButton.setOnClickListener(new View.OnClickListener() {
                     public void onClick(View view) {
@@ -138,8 +198,8 @@ public class NavView extends ViewModel {
                 topButton.setVisibility(View.VISIBLE);
 
                 v.findViewById(R.id.ticketLayout).setVisibility(View.GONE);
-
                 v.findViewById(R.id.search_wrap).setVisibility(View.VISIBLE);
+
                 searchView = new SearchEntry(v.findViewById(R.id.search_wrap),(Model) getModel().get("search"));
             }
         } else if(n.get("state") == NavStatus.State.SCANNING){
@@ -151,6 +211,8 @@ public class NavView extends ViewModel {
                 bottomButton.setVisibility(View.GONE);
             } else if((Boolean)observable.get("scanError")){
                 status.setText("invalid");
+                if (n.get("ticket") != null)
+                    n.set("ticket", null);
                 bottomButton.setVisibility(View.VISIBLE);
             } else {
                 status.setText("scanning");

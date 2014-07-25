@@ -25,6 +25,8 @@ public class Ticket extends Model {
     protected String activity_name = "test";
     protected String first_name = "guest";
     protected String last_name = "";
+    protected String lead_first_name = "lead guest";
+    protected String lead_last_name = "";
     protected String guest_type = "";
     protected String activity_date = "";
     protected String activity_time = "";

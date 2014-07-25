@@ -1,5 +1,6 @@
 package com.activityrez.fulfillment.models;
 
+import android.app.Activity;
 import android.os.Handler;
 import android.util.Log;
 
@@ -13,6 +14,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.google.inject.Inject;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -66,6 +68,7 @@ public class Login extends Model {
                     User u = new User();
                     u.hydrate(jsonObject.get("result"),true);
                     auth.setUser(u);
+
                     Handler h = new Handler();
                     h.postDelayed(new Runnable() {
                         @Override

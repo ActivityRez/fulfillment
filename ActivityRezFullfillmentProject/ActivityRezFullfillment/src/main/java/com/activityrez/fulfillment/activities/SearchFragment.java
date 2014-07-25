@@ -7,10 +7,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
+import android.widget.Spinner;
 
 import com.activityrez.fulfillment.ARContainer;
+import com.activityrez.fulfillment.AuthModule;
 import com.activityrez.fulfillment.R;
 import com.activityrez.fulfillment.core.ArezApi;
 import com.activityrez.fulfillment.events.AllIn;
@@ -36,6 +39,7 @@ import roboguice.RoboGuice;
  * Created by alex on 11/5/13.
  */
 public class SearchFragment extends Fragment {
+    @Inject AuthModule auth;
     @Inject ArezApi api;
     private ArrayList<Ticket> results = new ArrayList<Ticket>();
     private NavStatus.State state = NavStatus.State.DEFAULT;
@@ -167,30 +171,31 @@ public class SearchFragment extends Fragment {
             s = new SearchAdapter(results);
             ((ListView) getView().findViewById(R.id.listview)).setAdapter(s);
         }
-        if(ns.state == NavStatus.State.SEARCHING && t != null){
+        if(ns.state == NavStatus.State.SEARCHING) {
+            if( t != null){
             JSONObject params = new JSONObject();
             try {
                 params.put("sale", "" + t.get("sale_id"));
                 params.put("activity", "" + t.get("root_activity_id"));
                 params.put("showCXL", "false");
-                Log.i("params"," "+params);
+                Log.i("params", " " + params);
 
                 api.request(Request.Method.GET, "ticket/search", params, new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject ret) {
                         try {
-                            if(ret.getInt("status") < 1){
+                            if (ret.getInt("status") < 1) {
                                 onError();
                                 return;
                             }
-                            JSONArray list = (JSONArray)ret.get("results");
-                            if( list.length()==0 ){
+                            JSONArray list = (JSONArray) ret.get("results");
+                            if (list.length() == 0) {
                                 onError();
                                 return;
                             }
-                            for(int ni = 0; ni < list.length(); ni++){
+                            for (int ni = 0; ni < list.length(); ni++) {
                                 Ticket _t = new Ticket();
-                                _t.hydrate(list.get(ni),true);
+                                _t.hydrate(list.get(ni), true);
                                 results.add(_t);
                             }
                             s = new SearchAdapter(results);
@@ -198,7 +203,8 @@ public class SearchFragment extends Fragment {
                             ListView list_v = (ListView) _v.findViewById(R.id.listview);
                             list_v.setAdapter(s);
                             s.notifyDataSetChanged();
-                        } catch(Exception e){}
+                        } catch (Exception e) {
+                        }
                     }
                 }, new Response.ErrorListener() {
                     @Override
@@ -206,8 +212,25 @@ public class SearchFragment extends Fragment {
                         onError();
                     }
                 });
-            } catch(Exception e){
+            } catch (Exception e) {
                 onError();
+            }
+
+            } else {
+
+/*
+                Log.i("params","here!!!");
+                // ArrayAdapter を作成
+                String items[] = {"items1","items2","items3"};
+                act = new ArrayAdapter<String>(ARContainer.context, android.R.layout.simple_spinner_item, items);
+
+                // ドロップダウンリストのレイアウトを設定
+                act.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                Spinner spinner  = (Spinner) v_.findViewById(R.id.activity_search);
+                spinner.setAdapter(act);
+                // Spinner に表示させるプロンプトを設定
+                spinner.setPromptId(R.string.activity_prompt );
+*/
             }
         }
         state = ns.state;
@@ -215,7 +238,6 @@ public class SearchFragment extends Fragment {
 
     @Subscribe public void onAllIn(AllIn a){
         Ticket m;
-        Log.i("results size",""+results.size());
         for(int ni = 0; ni < results.size(); ni++) {
             m = results.get(ni);
             if( m == null || (Integer) m.get("checkin_status") != 0 ) continue;

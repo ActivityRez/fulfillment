@@ -12,6 +12,7 @@
     <string name="logo">logo</string>
     <string name="scan">scan</string>
     <string name="search">search</string>
+    <string name="activity_prompt">Activity</string>
     <string name="welcome">Welcome to</string>
     <string name="product">ActivityRez Fulfillment</string>
 

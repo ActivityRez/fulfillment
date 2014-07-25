@@ -11,21 +11,42 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.Spinner;
 
 import com.activityrez.fulfillment.ARContainer;
+import com.activityrez.fulfillment.AuthModule;
 import com.activityrez.fulfillment.R;
+import com.activityrez.fulfillment.core.ArezApi;
 import com.activityrez.fulfillment.core.Model;
 import com.activityrez.fulfillment.events.NavStatus;
 import com.activityrez.fulfillment.events.QRCodeFound;
+import com.activityrez.fulfillment.events.ValidTicket;
+import com.activityrez.fulfillment.models.Company;
 import com.activityrez.fulfillment.models.NavState;
+import com.activityrez.fulfillment.models.SoldActivity;
+import com.activityrez.fulfillment.models.Ticket;
+import com.activityrez.fulfillment.models.User;
 import com.activityrez.fulfillment.views.NavView;
+import com.activityrez.fulfillment.views.SearchAdapter;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.google.inject.Inject;
 import com.squareup.otto.Subscribe;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 /**
  * Created by alex on 10/30/13.
  */
 public class NavFragment extends Fragment {
     private NavView navView;
+    private Ticket t;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -68,6 +89,10 @@ public class NavFragment extends Fragment {
         navView = null;
     }
 
+    @Subscribe public void onValidTicket(ValidTicket v){
+        t = v.ticket;
+    }
+
     @Subscribe public void onNavStatus(NavStatus n){
         if(navView == null) return;
         NavState ns = (NavState) navView.getModel();
@@ -78,7 +103,13 @@ public class NavFragment extends Fragment {
 
         if(n.state == NavStatus.State.SCANNING){
             moveRight();
+            t=null;
         } else if(ns.get("state") == NavStatus.State.SCANNING){
+
+            if( t == null) {
+
+            }
+
             moveLeft();
         }
 

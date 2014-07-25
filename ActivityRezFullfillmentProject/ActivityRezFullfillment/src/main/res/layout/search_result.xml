@@ -12,7 +12,10 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_marginTop="12dp"
-        android:button="@drawable/custom_checkbox"/>
+        android:button="@drawable/custom_checkbox"
+        android:scaleX="1.50"
+        android:scaleY="1.50"
+        />
     <RelativeLayout
         android:id="@+id/sale_info"
         android:layout_height="wrap_content"
@@ -55,6 +58,7 @@
         />
         <com.activityrez.fulfillment.CustomText
             android:id="@+id/guestName"
+            android:text="John Doe"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:gravity="left"

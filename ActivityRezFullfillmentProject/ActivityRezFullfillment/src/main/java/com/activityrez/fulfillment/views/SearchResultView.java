@@ -106,7 +106,10 @@ public class SearchResultView extends ViewModel {
         Ticket m = (Ticket) getModel();
 
         CustomText text = (CustomText) v.findViewById(R.id.guestName);
-        text.setText(((String) m.get("first_name")+(String)" "+(String) m.get("last_name")).trim());
+        if (((String) m.get("first_name")).length() > 0 || ((String) m.get("last_name")).length() > 0)
+            text.setText(((String) m.get("first_name")+(String)" "+(String) m.get("last_name")).trim());
+        else
+            text.setText(((String) m.get("lead_first_name")+(String)" "+(String) m.get("lead_last_name")).trim());
         CustomText type = (CustomText) v.findViewById(R.id.guest_title);
         type.setText((String) m.get("guest_type"));
         CustomText act = (CustomText) v.findViewById(R.id.activity_name);
