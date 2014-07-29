@@ -1,33 +1,23 @@
 package com.activityrez.fulfillment.views;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewParent;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.BaseAdapter;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ImageButton;
-import android.widget.ListView;
-import android.widget.TextView;
 
 import com.activityrez.fulfillment.ARContainer;
 import com.activityrez.fulfillment.CustomText;
 import com.activityrez.fulfillment.R;
 import com.activityrez.fulfillment.core.ArezApi;
 import com.activityrez.fulfillment.core.ViewModel;
-import com.activityrez.fulfillment.events.NavStatus;
 import com.activityrez.fulfillment.events.SearchEvent;
 import com.activityrez.fulfillment.models.*;
 import com.activityrez.fulfillment.models.SearchEntry;
 import com.google.inject.Inject;
 
-import java.util.ArrayList;
 import java.util.Observable;
-import org.json.JSONObject;
 
 /**
  * Created by alex on 10/16/13.

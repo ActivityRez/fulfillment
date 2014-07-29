@@ -7,9 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 
@@ -24,8 +22,8 @@ import com.activityrez.fulfillment.core.ViewModel;
 import com.activityrez.fulfillment.events.AllIn;
 import com.activityrez.fulfillment.events.NavStatus;
 import com.activityrez.fulfillment.events.SearchEvent;
-import com.activityrez.fulfillment.events.ValidTicket;
 import com.activityrez.fulfillment.models.Company;
+import com.activityrez.fulfillment.models.DateRange;
 import com.activityrez.fulfillment.models.Login;
 import com.activityrez.fulfillment.models.NavState;
 import com.activityrez.fulfillment.models.SoldActivity;
@@ -39,7 +37,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.lang.reflect.Method;
-import java.util.ArrayList;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Observable;
 
 /**
@@ -55,8 +54,8 @@ public class NavView extends ViewModel {
     protected ImageView logo;
     protected CustomButton topButton;
     protected CustomButton bottomButton;
-    private ArrayAdapter<String> a;
-    private ArrayList<SoldActivity> activities = new ArrayList<SoldActivity>();
+    private ArrayAdapter<SoldActivity> a;
+    private ArrayAdapter<DateRange> d;
 
     public NavView(View v){
         this(v, new NavState(null));
@@ -137,8 +136,13 @@ public class NavView extends ViewModel {
                 v.findViewById(R.id.ticketLayout).setVisibility(View.VISIBLE);
             } else {
 
-                a = new ArrayAdapter<String>(ARContainer.context, android.R.layout.simple_spinner_item);
-                a.add("(none)");
+                a = new ArrayAdapter(ARContainer.context, R.layout.spinner);
+                try {
+                    JSONObject j = new JSONObject("{\"id\":0,\"name\":(none)}");
+                    SoldActivity act = new SoldActivity();
+                    act.hydrate(j,true);
+                    a.add(act);
+                } catch(Exception e){}
 
                 JSONObject params = new JSONObject();
                 try {
@@ -149,6 +153,11 @@ public class NavView extends ViewModel {
                                 public void onResponse(JSONObject ret) {
                                     try {
                                         if (ret.getInt("status") < 1) {
+                                            if( ret.has("total") && ret.getInt("total") == 0 ) {
+                                                onActivityNotFound();;
+                                            } else {
+                                                onError();
+                                            }
                                             return;
                                         }
                                         JSONArray list = (JSONArray) ret.get("results");
@@ -159,9 +168,9 @@ public class NavView extends ViewModel {
                                         for (int ni = 0; ni < list.length(); ni++) {
                                             SoldActivity act = new SoldActivity();
                                             act.hydrate(list.get(ni), true);
-                                            activities.add(act);
-                                            a.add((String)act.get("name"));
+                                            a.add(act);
                                         }
+
                                     } catch (Exception e) {
                                         Log.e("ERRORS", e.toString());
                                     }
@@ -176,11 +185,24 @@ public class NavView extends ViewModel {
                     Log.e("ERRORS", e.toString());
                 }
 
-                a.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                Spinner spinner = (Spinner) getView().findViewById(R.id.activity_search);
-                spinner.setPromptId(R.string.activity_prompt);
-                spinner.setAdapter(a);
+                a.setDropDownViewResource( R.layout.spinner_dropdown );
+                Spinner spinner1 = (Spinner) getView().findViewById(R.id.activity_search);
+                spinner1.setPromptId(R.string.activity_prompt);
+                spinner1.setAdapter(a);
 
+                Calendar cal = Calendar.getInstance();
+                SimpleDateFormat td = new SimpleDateFormat("MM/dd/yyyy");
+                String today = td.format(cal.getTime());
+
+                d = new ArrayAdapter(ARContainer.context, R.layout.spinner, new DateRange[] {
+                        new DateRange( 1, "Only Today ("+today+")" ),
+                        new DateRange( 2, "Starting Today (From "+today+")" ),
+                        new DateRange( 3, "All" ),
+                });
+                d.setDropDownViewResource( R.layout.spinner_dropdown );
+                Spinner spinner2 = (Spinner) getView().findViewById(R.id.date_range_search);
+                spinner2.setPromptId(R.string.date_range_prompt);
+                spinner2.setAdapter(d);
 
 
                 topButton.setText("search");
@@ -284,6 +306,13 @@ public class NavView extends ViewModel {
 
     private void onSuccess(){}
     private void onError(){
+        View v = (View) getView().findViewById(R.id.search_error);
+        ((CustomText) v.findViewById(R.id.error_message)).setText("There was an error communicating with the server. Please try again later.");
+        getView().findViewById(R.id.search_error).setVisibility(View.VISIBLE);
+    }
+    private void onActivityNotFound(){
+        View v = (View) getView().findViewById(R.id.search_error);
+        ((CustomText) v.findViewById(R.id.error_message)).setText("Not sold activities found for the filter. You may not have them yet. Please try again later.");
         getView().findViewById(R.id.search_error).setVisibility(View.VISIBLE);
     }
 }

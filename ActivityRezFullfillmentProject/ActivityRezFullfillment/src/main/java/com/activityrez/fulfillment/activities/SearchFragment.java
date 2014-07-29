@@ -1,19 +1,16 @@
 package com.activityrez.fulfillment.activities;
 
 import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.ListView;
-import android.widget.Spinner;
 
 import com.activityrez.fulfillment.ARContainer;
 import com.activityrez.fulfillment.AuthModule;
+import com.activityrez.fulfillment.CustomText;
 import com.activityrez.fulfillment.R;
 import com.activityrez.fulfillment.core.ArezApi;
 import com.activityrez.fulfillment.events.AllIn;
@@ -91,7 +88,7 @@ public class SearchFragment extends Fragment {
 
         _v.findViewById(R.id.search_error).setVisibility(View.GONE);
 
-        if( ((String)se.data.get("sale_id")).length() >0 || ((String)se.data.get("phone")).length() >0 || ((String)se.data.get("email")).length() >0 || ((String)se.data.get("name")).length() >0  ) {
+        if( ((String)se.data.get("sale_id")).length() >0 || ((String)se.data.get("phone")).length() >0 || ((String)se.data.get("email")).length() >0 || ((String)se.data.get("name")).length() >0 || (Integer) se.data.get("activity_id") > 0 ) {
 
             if( results.size() > 0 ) results.clear();
 
@@ -102,6 +99,16 @@ public class SearchFragment extends Fragment {
                 params.put("email", se.data.get("email"));
                 params.put("term", se.data.get("name"));
                 params.put("showCXL", "false");
+                if( (Integer) se.data.get("activity_id") > 0 ) {
+                    params.put("activity", se.data.get("activity_id"));
+                }
+                if( !((String) se.data.get("date_from")).isEmpty() ) {
+                    params.put("date_from", se.data.get("date_from"));
+                }
+                if( !((String) se.data.get("date_to")).isEmpty() ) {
+                    params.put("date_to", se.data.get("date_to"));
+                }
+
                 Log.i("params", " " + params);
 
                 api.request(Request.Method.GET, "ticket/search", params, new Response.Listener<JSONObject>() {
@@ -109,12 +116,16 @@ public class SearchFragment extends Fragment {
                             public void onResponse(JSONObject ret) {
                                 try {
                                     if (ret.getInt("status") < 1) {
-                                        onError();
+                                         if( ret.has("total") && ret.getInt("total") == 0 ) {
+                                            onTicketNotFound();
+                                         } else {
+                                             onError();
+                                         }
                                         return;
                                     }
                                     JSONArray list = (JSONArray) ret.get("results");
                                     if (list.length() == 0) {
-                                        onError();
+                                        onTicketNotFound();
                                         return;
                                     }
 
@@ -172,7 +183,7 @@ public class SearchFragment extends Fragment {
             ((ListView) getView().findViewById(R.id.listview)).setAdapter(s);
         }
         if(ns.state == NavStatus.State.SEARCHING) {
-            if( t != null){
+          if( t != null){
             JSONObject params = new JSONObject();
             try {
                 params.put("sale", "" + t.get("sale_id"));
@@ -190,7 +201,7 @@ public class SearchFragment extends Fragment {
                             }
                             JSONArray list = (JSONArray) ret.get("results");
                             if (list.length() == 0) {
-                                onError();
+                                onTicketNotFound();
                                 return;
                             }
                             for (int ni = 0; ni < list.length(); ni++) {
@@ -216,22 +227,7 @@ public class SearchFragment extends Fragment {
                 onError();
             }
 
-            } else {
-
-/*
-                Log.i("params","here!!!");
-                // ArrayAdapter を作成
-                String items[] = {"items1","items2","items3"};
-                act = new ArrayAdapter<String>(ARContainer.context, android.R.layout.simple_spinner_item, items);
-
-                // ドロップダウンリストのレイアウトを設定
-                act.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                Spinner spinner  = (Spinner) v_.findViewById(R.id.activity_search);
-                spinner.setAdapter(act);
-                // Spinner に表示させるプロンプトを設定
-                spinner.setPromptId(R.string.activity_prompt );
-*/
-            }
+          }
         }
         state = ns.state;
     }
@@ -250,6 +246,13 @@ public class SearchFragment extends Fragment {
         getView().findViewById(R.id.search_error).setVisibility(View.GONE);
     }
     private void onError(){
+        View v = (View) getView().findViewById(R.id.search_error);
+        ((CustomText) v.findViewById(R.id.error_message)).setText("There was an error communicating with the server. Please try again later.");
+        getView().findViewById(R.id.search_error).setVisibility(View.VISIBLE);
+    }
+    private void onTicketNotFound(){
+        View v = (View) getView().findViewById(R.id.search_error);
+        ((CustomText) v.findViewById(R.id.error_message)).setText("Not tickets found.");
         getView().findViewById(R.id.search_error).setVisibility(View.VISIBLE);
     }
 }

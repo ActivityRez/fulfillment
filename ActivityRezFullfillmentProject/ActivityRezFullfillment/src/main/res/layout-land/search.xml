@@ -10,7 +10,7 @@
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="match_parent"
-        android:padding="20dp"
+        android:padding="3dp"
         >
         <com.activityrez.fulfillment.CustomText
             android:id="@+id/name_title"
@@ -102,6 +102,22 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/activity_title"
+            android:textColor="@color/my_black"
+            >
+        </Spinner>
+        <com.activityrez.fulfillment.CustomText
+            android:id="@+id/date_range_title"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_below="@id/activity_search"
+            android:text="quick date range"
+            android:textColor="@color/my_white"
+            />
+        <Spinner
+            android:id="@+id/date_range_search"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/date_range_title"
             android:textColor="@color/my_black"
             >
         </Spinner>

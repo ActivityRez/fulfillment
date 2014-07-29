@@ -145,8 +145,6 @@ public final class CameraManager {
 
         List<Camera.Size> sizes = parameters.getSupportedPreviewSizes();
         Camera.Size cs = sizes.get(0);
-        int width = cs.width;
-        int height = cs.height;
 
         int rotation = ((WindowManager)ARContainer.context.getSystemService(ARContainer.context.WINDOW_SERVICE)).getDefaultDisplay().getRotation();
         switch(info.orientation){
@@ -161,23 +159,31 @@ public final class CameraManager {
                 break;
         }
 
+
+        for(int i = 1; i < sizes.size(); i++) {
+            if ((sizes.get(i).width * sizes.get(i).height) > (cs.width * cs.height)) {
+                cs = sizes.get(i);
+            }
+        }
+
         //if(isActive)
         //    stopPreview();
         if(rotation == Surface.ROTATION_90){
             camera.setDisplayOrientation(90);
-            parameters.setPreviewSize(height, width);
+//          parameters.setPreviewSize( cs.height, cs.width );
         } else if(rotation == Surface.ROTATION_0){
-//            camera.setDisplayOrientation(0);
             camera.setDisplayOrientation(180);
-            parameters.setPreviewSize(width, height);
+//          camera.setDisplayOrientation(0);
+//          parameters.setPreviewSize( cs.width, cs.height );
         } else if(rotation == Surface.ROTATION_270){
             camera.setDisplayOrientation(270);
-            parameters.setPreviewSize(width, height);
+//          parameters.setPreviewSize( cs.width, cs.height );
         } else if(rotation == Surface.ROTATION_180){
-//            camera.setDisplayOrientation(180);
             camera.setDisplayOrientation(0);
-            parameters.setPreviewSize(height, width);
+//          camera.setDisplayOrientation(180);
+//          parameters.setPreviewSize( cs.height, cs.width );
         }
+        parameters.setPreviewSize(cs.width, cs.height);
 
         camera.setParameters(parameters);
         //if(isActive)

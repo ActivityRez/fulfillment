@@ -13,6 +13,7 @@
     <string name="scan">scan</string>
     <string name="search">search</string>
     <string name="activity_prompt">Activity</string>
+    <string name="date_range_prompt">Date Range</string>
     <string name="welcome">Welcome to</string>
     <string name="product">ActivityRez Fulfillment</string>
 

@@ -8,4 +8,10 @@ import com.activityrez.fulfillment.core.Model;
 public class SoldActivity extends Model {
     protected int id;
     protected String name;
+
+    public String toString()
+    {
+        return( name );
+    }
+
 }

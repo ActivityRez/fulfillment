@@ -19,13 +19,15 @@
         android:background="#3fff"
         android:visibility="gone">
         <com.activityrez.fulfillment.CustomText
+            android:id="@+id/error_message"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
             android:textSize="30dp"
             android:textColor="@color/my_red"
-            android:text="there was an error communicating with the server"
+            android:text="There was an error communicating with the server. Please try again later."
             />
-        </FrameLayout>
+    </FrameLayout>
+
 </com.activityrez.fulfillment.views.WholeSlider>
