@@ -23,8 +23,7 @@ import roboguice.RoboGuice;
 public class ArezApi {
     @Inject AuthModule auth;
 
-    private static final String BASE_URL = "https://demo.activityrez.com/ar-core/api/";
-    private static final String OLD_BASE_URL = "https://staging.activityrez.com/wp-content/plugins/flash-api/wsrv.php";
+    private static final String BASE_URL = "https://secure.activityrez.com/ar-core/api/";
     private RequestQueue queue;
 
     @Inject public ArezApi(){
@@ -67,41 +66,7 @@ public class ArezApi {
         queue.add(req);
         return req;
     }
-    public void oldRequest(String service, String action, JSONObject params, Listener<JSONObject> on_success, ErrorListener on_error){
-        oldRequest(Method.GET,service,action,params,on_success,on_error);
-    }
-    public void oldRequest(int method, String service, String action, JSONObject params, Listener<JSONObject> on_success, ErrorListener on_error){
-        final Listener<JSONObject> _callback = on_success;
-        final String token = auth.getToken();
 
-        if(params == null)
-            params = new JSONObject();
-
-        try{
-            if(params.has("token"))
-                params.remove("token");
-            if(!params.has("nonce"))
-                params.put("nonce",token);
-            if(!params.has("service"))
-                params.put("service",service);
-            if(!params.has("action"))
-                params.put("action",action);
-        } catch(JSONException e){}
-
-        PHPJsonRequest req = new PHPJsonRequest(method, OLD_BASE_URL, params, new Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject s){
-                try {
-                    if(s.has("nonce") && s.getString("nonce") != token){
-                        auth.setToken(s.getString("nonce"));
-                    }
-                } catch(JSONException e){}
-                if(_callback == null) return;
-                _callback.onResponse(s);
-            }
-        }, on_error);
-        queue.add(req);
-    }
 }
 
 

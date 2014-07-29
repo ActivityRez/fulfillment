@@ -78,7 +78,7 @@ public class SplashScreenActivity extends Activity {
             public void onResponse(JSONObject jsonObject) {
                 try {
                     if (jsonObject.getInt("status") != -1) {
-                        Log.i("beans",jsonObject.get("result").toString());
+                        //Log.i("beans",jsonObject.get("result").toString());
                         User u = new User();
                         u.hydrate(jsonObject.get("result"),true);
                         auth.setUser(u);

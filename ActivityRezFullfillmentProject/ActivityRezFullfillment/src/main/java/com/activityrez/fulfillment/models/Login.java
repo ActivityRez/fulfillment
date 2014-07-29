@@ -57,7 +57,7 @@ public class Login extends Model {
                 public void onResponse(JSONObject jsonObject) {
                     set("loading", false);
                     try {
-                        Log.i("got back",jsonObject.toString());
+                        //Log.i("got back",jsonObject.toString());
                         if (jsonObject.getInt("status") == -1) {
                             set("error", jsonObject.getString("msg"));
                             return;
@@ -99,7 +99,7 @@ public class Login extends Model {
                     public void onResponse(JSONObject jsonObject) {
                         set("loading", false);
                         try {
-                            Log.i("logging out",jsonObject.toString());
+                            //Log.i("logging out",jsonObject.toString());
                             if (jsonObject.getInt("status") == -1) {
                                 set("error", jsonObject.getString("msg"));
                                 return;
@@ -107,7 +107,7 @@ public class Login extends Model {
                             auth.setUser(new User());
                             set("show", true);
                         } catch (JSONException e) {
-                            Log.e("log out error",""+e);
+                            //Log.e("log out error",""+e);
                         }
                     }
                 }, new Response.ErrorListener() {
