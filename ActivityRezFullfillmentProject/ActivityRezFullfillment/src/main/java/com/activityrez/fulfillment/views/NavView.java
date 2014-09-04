@@ -48,7 +48,6 @@ public class NavView extends ViewModel {
     @Inject AuthModule auth;
     @Inject ArezApi api;
 
-
     protected LoginView loginView;
     protected SearchEntry searchView;
     protected ImageView logo;
@@ -56,6 +55,9 @@ public class NavView extends ViewModel {
     protected CustomButton bottomButton;
     private ArrayAdapter<SoldActivity> a;
     private ArrayAdapter<DateRange> d;
+
+    private static final long limitedTime = 1000;
+    private static long clickTime;
 
     public NavView(View v){
         this(v, new NavState(null));
@@ -204,10 +206,11 @@ public class NavView extends ViewModel {
                 spinner2.setPromptId(R.string.date_range_prompt);
                 spinner2.setAdapter(d);
 
-
                 topButton.setText("search");
                 topButton.setOnClickListener(new View.OnClickListener() {
                     public void onClick(View view) {
+                        if( !oneClickEvent() ) return;
+
                         InputMethodManager mgr = (InputMethodManager) ARContainer.context.getSystemService(Context.INPUT_METHOD_SERVICE);
                         mgr.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
 
@@ -302,6 +305,15 @@ public class NavView extends ViewModel {
             Method update = getClass().getMethod("update",observable.getClass(), Object.class);
             update.invoke(this, observable, data);
         } catch(Exception e) {}
+    }
+
+    public static boolean oneClickEvent() {
+        long time = System.currentTimeMillis();
+        if( time - clickTime < limitedTime ) {
+            return false;
+        }
+        clickTime = time;
+        return true;
     }
 
     private void onSuccess(){}

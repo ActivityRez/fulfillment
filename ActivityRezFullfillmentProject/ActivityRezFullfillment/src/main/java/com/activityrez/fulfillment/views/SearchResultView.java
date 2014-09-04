@@ -1,7 +1,12 @@
 package com.activityrez.fulfillment.views;
 
+import android.content.ClipData;
+import android.content.ClipDescription;
+import android.content.ClipboardManager;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.CheckBox;
@@ -12,6 +17,9 @@ import com.activityrez.fulfillment.CustomText;
 import com.activityrez.fulfillment.R;
 import com.activityrez.fulfillment.core.ArezApi;
 import com.activityrez.fulfillment.core.ViewModel;
+import com.activityrez.fulfillment.events.AllIn;
+import com.activityrez.fulfillment.events.CheckAllDialog;
+import com.activityrez.fulfillment.events.DialogEvent;
 import com.activityrez.fulfillment.events.SearchEvent;
 import com.activityrez.fulfillment.models.*;
 import com.activityrez.fulfillment.models.SearchEntry;
@@ -41,7 +49,9 @@ public class SearchResultView extends ViewModel {
 
         final CheckBox check = (CheckBox) v.findViewById(R.id.checkbox1);
         final ImageButton cb = (ImageButton) v.findViewById(R.id.comment_button);
+        final ImageButton cl = (ImageButton) v.findViewById(R.id.clipboard);
         final View cv = v.findViewById(R.id.guest_notes);
+        final View sh = v.findViewById(R.id.sale_hold);
 
         v.findViewById(R.id.result_wrap).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,14 +71,22 @@ public class SearchResultView extends ViewModel {
             }
         });
 
-        check.setOnClickListener(new View.OnClickListener(){
+        check.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if( check.isChecked() ) {
+                if (check.isChecked()) {
                     getModel().set("checkin_status", 1);
                 } else {
                     getModel().set("checkin_status", 0);
                 }
+            }
+        });
+
+        check.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                ARContainer.bus.post(new CheckAllDialog());
+                return true;
             }
         });
 
@@ -86,6 +104,18 @@ public class SearchResultView extends ViewModel {
                         cv.setVisibility(View.GONE);
                     }
                 }
+            }
+        });
+
+        cl.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                ClipboardManager clipboard = (ClipboardManager) ARContainer.context.getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipData clip = ClipData.newPlainText( "label", m.get("sale_id").toString() );
+                clipboard.setPrimaryClip(clip);
+
+                ARContainer.bus.post(new DialogEvent( m.get("sale_id").toString()) );
             }
         });
     }
@@ -112,6 +142,8 @@ public class SearchResultView extends ViewModel {
         int ck = (Integer)(m.get("checkin_status"));
         ImageButton cb = (ImageButton) v.findViewById(R.id.comment_button);
         View cv = v.findViewById(R.id.guest_notes);
+        String du = (String) m.get("due");
+        View sh = v.findViewById(R.id.sale_hold);
 
         if( ck ==1 )
             check.setChecked(true);
@@ -130,6 +162,13 @@ public class SearchResultView extends ViewModel {
             cb.setImageResource(R.drawable.comment_d);
             cv.setVisibility(View.GONE);
         }
+
+        if( du.length() > 0) {
+            sh.setVisibility(View.VISIBLE);
+        } else {
+            sh.setVisibility(View.GONE);
+        }
+
     }
 
 }

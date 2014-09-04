@@ -45,10 +45,10 @@
             android:textColor="@color/my_white" />
 
         <com.activityrez.fulfillment.CustomButton
+            android:id="@+id/button2"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="@string/scan"
-            android:id="@+id/button2"
             android:height="50dp"
             android:textColor="#fff"
             android:textSize="28px"

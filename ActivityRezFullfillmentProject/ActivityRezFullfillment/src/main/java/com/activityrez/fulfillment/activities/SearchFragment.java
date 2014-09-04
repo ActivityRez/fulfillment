@@ -1,6 +1,8 @@
 package com.activityrez.fulfillment.activities;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +16,9 @@ import com.activityrez.fulfillment.CustomText;
 import com.activityrez.fulfillment.R;
 import com.activityrez.fulfillment.core.ArezApi;
 import com.activityrez.fulfillment.events.AllIn;
+import com.activityrez.fulfillment.events.CheckAllDialog;
+import com.activityrez.fulfillment.events.DialogEvent;
+import com.activityrez.fulfillment.events.InternetError;
 import com.activityrez.fulfillment.events.NavStatus;
 import com.activityrez.fulfillment.events.SearchEvent;
 import com.activityrez.fulfillment.events.ValidTicket;
@@ -49,6 +54,7 @@ public class SearchFragment extends Fragment {
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
         _v = inflater.inflate(R.layout.search_results, container, false);
         for(int ni = 0; ni < 10;ni++){
             Ticket _r = new Ticket();
@@ -240,6 +246,45 @@ public class SearchFragment extends Fragment {
             m.set("checkin_status", 1);
         }
         s.notifyDataSetChanged();
+    }
+
+    @Subscribe public void onInternetError(InternetError ie){
+        results.clear();
+        View v = (View) getView().findViewById(R.id.search_error);
+        ((CustomText) v.findViewById(R.id.error_message)).setText("There was an error communicating with the server. Please try again later.");
+        getView().findViewById(R.id.search_error).setVisibility(View.VISIBLE);
+    }
+
+    @Subscribe public void onDialogEvent(DialogEvent ev){
+        new AlertDialog.Builder(getActivity())
+                .setTitle("Sale ID has been copied to clipboard.")
+                .setMessage("\nSale ID: " + ev.sale_id)
+                .setPositiveButton(
+                        "Close",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(
+                                    DialogInterface dialog, int which) {
+                            }
+                        }
+                )
+                .show();
+    }
+
+    @Subscribe public void onCheckAllDialog(CheckAllDialog ev){
+        new AlertDialog.Builder(getActivity())
+                .setMessage("\nWould you like to check all tickets?")
+                .setPositiveButton(
+                        "Yes",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick( DialogInterface dialog, int which ) {
+                                ARContainer.bus.post(new AllIn());
+                            }
+                        })
+                .setNegativeButton(
+                        "No",null)
+                .show();
     }
 
     private void onSuccess(){

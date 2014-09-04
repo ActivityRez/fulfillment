@@ -20,23 +20,36 @@
     <RelativeLayout
         android:id="@+id/sale_info"
         android:layout_height="wrap_content"
-        android:layout_width="60dp"
+        android:layout_width="100dp"
         android:layout_marginTop="10dp">
+        <ImageButton
+            android:id="@+id/clipboard"
+            android:layout_height="fill_parent"
+            android:layout_width="wrap_content"
+            android:src="@drawable/clipboard_button"
+            android:gravity="center"
+            android:scaleType="center"
+            android:background="@null"
+            android:layout_marginTop="6dp"
+            android:layout_marginLeft="6dp"
+            android:layout_alignParentRight="true"
+            />
         <com.activityrez.fulfillment.CustomText
             android:id="@+id/voucher_id"
             android:text="22132312"
             android:textColor="@color/my_black"
             android:layout_height="wrap_content"
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:textSize="16dp"
-            android:gravity="center" />
-        <com.activityrez.fulfillment.CustomText
+            android:gravity="center"
+            android:layout_toLeftOf="@id/clipboard"
+       />
+       <com.activityrez.fulfillment.CustomText
             android:id="@+id/voucher_title"
             android:text="Voucher #"
             android:textColor="@color/my_grey"
             android:layout_height="wrap_content"
             android:layout_width="fill_parent"
-            android:gravity="center"
             android:textSize="12.5dp"
             android:layout_below="@id/voucher_id" />
         </RelativeLayout>
@@ -54,9 +67,20 @@
             android:src="@drawable/comment_d"
             android:scaleType="center"
             android:background="@null"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="6dp"
             android:layout_alignParentRight="true"
         />
+        <ImageView
+            android:id="@+id/sale_hold"
+            android:layout_height="38dp"
+            android:layout_width="38dp"
+            android:src="@drawable/flag_icon"
+            android:scaleType="center"
+            android:background="@null"
+            android:layout_marginTop="6dp"
+            android:layout_marginRight="46dp"
+            android:layout_alignParentRight="true"
+            />
         <com.activityrez.fulfillment.CustomText
             android:id="@+id/guestName"
             android:text="John Doe"
@@ -64,7 +88,7 @@
             android:layout_height="wrap_content"
             android:gravity="left"
             android:textColor="@color/my_black"
-            android:layout_toLeftOf="@id/comment_button"
+            android:layout_toLeftOf="@id/sale_hold"
             android:textSize="38px"
             />
         <com.activityrez.fulfillment.CustomText

@@ -2,9 +2,13 @@ package com.activityrez.fulfillment.models;
 
 import android.util.Log;
 
+import com.activityrez.fulfillment.ARContainer;
 import com.activityrez.fulfillment.core.ArezApi;
 import com.activityrez.fulfillment.core.Model;
 import com.activityrez.fulfillment.events.AllIn;
+import com.activityrez.fulfillment.events.InternetError;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.google.inject.Inject;
 import com.squareup.otto.Subscribe;
 
@@ -34,6 +38,7 @@ public class Ticket extends Model {
     protected String comments = "";
     protected boolean comment_visible = false;
     protected int checkin_status = 0;
+    protected String due = "";
     protected GuestOverview[] guest_info;
 
     public void set(String field, Object val){
@@ -43,8 +48,15 @@ public class Ticket extends Model {
             try {
                 params.put("id",get("id"));
                 params.put("checkin_status",val);
-                api.request("ticket/status",params,null,null);
-            } catch(Exception e){}
+                api.request("ticket/status", params, null, new Response.ErrorListener() {
+                       @Override
+                            public void onErrorResponse(VolleyError volleyError) {
+                                ARContainer.bus.post(new InternetError());
+                       }
+                });
+            } catch(Exception e){
+                ARContainer.bus.post(new InternetError());
+            }
         }
         try {
             Field f = this.getClass().getDeclaredField(field);
