@@ -33,7 +33,7 @@ public class ArezApi {
     }
 
     public Request request(String url,JSONObject params, Listener<JSONObject> on_success, ErrorListener on_error){
-        return request(Method.GET, url, params, on_success, on_error);
+        return request(Method.POST, url, params, on_success, on_error);
     }
     public Request request(int method, String url,JSONObject params, Listener<JSONObject> on_success, ErrorListener on_error){
         final Listener<JSONObject> _callback = on_success;

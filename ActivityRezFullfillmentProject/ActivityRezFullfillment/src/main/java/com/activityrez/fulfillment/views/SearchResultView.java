@@ -151,7 +151,6 @@ public class SearchResultView extends ViewModel {
             Number n = nf.parse(du);
             due = n.floatValue();
         } catch (ParseException e) {
-            Log.e("due parsing fail",e+"");
         }
 
         View sh = v.findViewById(R.id.sale_hold);
