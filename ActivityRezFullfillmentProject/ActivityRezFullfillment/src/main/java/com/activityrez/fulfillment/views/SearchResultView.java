@@ -25,6 +25,8 @@ import com.activityrez.fulfillment.models.*;
 import com.activityrez.fulfillment.models.SearchEntry;
 import com.google.inject.Inject;
 
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.Observable;
 
 /**
@@ -143,6 +145,15 @@ public class SearchResultView extends ViewModel {
         ImageButton cb = (ImageButton) v.findViewById(R.id.comment_button);
         View cv = v.findViewById(R.id.guest_notes);
         String du = (String) m.get("due");
+        NumberFormat nf = NumberFormat.getInstance();
+        float due = 0;
+        try {
+            Number n = nf.parse(du);
+            due = n.floatValue();
+        } catch (ParseException e) {
+            Log.e("due parsing fail",e+"");
+        }
+
         View sh = v.findViewById(R.id.sale_hold);
 
         if( ck ==1 )
@@ -163,7 +174,7 @@ public class SearchResultView extends ViewModel {
             cv.setVisibility(View.GONE);
         }
 
-        if( du.length() > 0) {
+        if( due > 0 ) {
             sh.setVisibility(View.VISIBLE);
         } else {
             sh.setVisibility(View.GONE);
