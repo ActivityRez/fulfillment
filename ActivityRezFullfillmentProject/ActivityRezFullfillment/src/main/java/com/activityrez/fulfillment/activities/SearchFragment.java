@@ -259,6 +259,7 @@ public class SearchFragment extends Fragment {
         new AlertDialog.Builder(getActivity())
                 .setTitle("Sale ID has been copied to clipboard.")
                 .setMessage("\nSale ID: " + ev.sale_id)
+                .setIcon(R.drawable.clipboard_c)
                 .setPositiveButton(
                         "Close",
                         new DialogInterface.OnClickListener() {
