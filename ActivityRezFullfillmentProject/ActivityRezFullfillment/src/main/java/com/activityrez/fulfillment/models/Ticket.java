@@ -67,9 +67,9 @@ public class Ticket extends Model {
             f.set(this,val);
 
         } catch(NoSuchFieldException e){
-            Log.e("model","field [" + field + "] does not exist");
+            //Log.e("model","field [" + field + "] does not exist");
         } catch(IllegalAccessException e){
-            Log.e("model","field [" + field + "] cannot be accessed");
+            //Log.e("model","field [" + field + "] cannot be accessed");
         }
     }
 }

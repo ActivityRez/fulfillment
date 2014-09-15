@@ -115,8 +115,6 @@ public class SearchFragment extends Fragment {
                     params.put("date_to", se.data.get("date_to"));
                 }
 
-                Log.i("params", " " + params);
-
                 api.request(Request.Method.GET, "ticket/search", params, new Response.Listener<JSONObject>() {
                             @Override
                             public void onResponse(JSONObject ret) {
@@ -149,7 +147,7 @@ public class SearchFragment extends Fragment {
 
                                     onSuccess();
                                 } catch (Exception e) {
-                                    Log.e("ERRORS", e.toString());
+                                    //Log.e("ERRORS", e.toString());
                                 }
                             }
                         }, new Response.ErrorListener() {
@@ -161,7 +159,7 @@ public class SearchFragment extends Fragment {
                 );
             } catch (Exception e) {
                 onError();
-                Log.e("ERRORS", e.toString());
+                //Log.e("ERRORS", e.toString());
             }
         }
     }
@@ -170,8 +168,8 @@ public class SearchFragment extends Fragment {
     }
     @Subscribe public void onNavStateChange(NavStatus ns){
 
-        Log.i("old nav state",state.toString());
-        Log.i("new nav state",ns.state.toString());
+        //Log.i("old nav state",state.toString());
+        //Log.i("new nav state",ns.state.toString());
 
         if(results.size() > 0) {
             results.clear();
@@ -195,7 +193,6 @@ public class SearchFragment extends Fragment {
                 params.put("sale", "" + t.get("sale_id"));
                 params.put("activity", "" + t.get("root_activity_id"));
                 params.put("showCXL", "false");
-                Log.i("params", " " + params);
 
                 api.request(Request.Method.GET, "ticket/search", params, new Response.Listener<JSONObject>() {
                     @Override

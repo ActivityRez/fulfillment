@@ -95,7 +95,7 @@ public final class CaptureActivityHandler extends Handler {
     }
 
     public void restartPreviewAndDecode() {
-        Log.i(TAG,state == State.PREVIEW?"in preview":"not in preview");
+        //Log.i(TAG,state == State.PREVIEW?"in preview":"not in preview");
         if (state != State.PREVIEW) {
             state = State.PREVIEW;
             cameraManager.requestPreviewFrame(decodeThread.getHandler(), R.id.decode);

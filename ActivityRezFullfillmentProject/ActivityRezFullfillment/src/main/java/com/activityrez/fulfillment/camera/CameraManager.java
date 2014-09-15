@@ -79,24 +79,24 @@ public final class CameraManager {
     }
 
     public void init(SurfaceHolder surfaceHolder){
-        Log.i("lifecycle","init called");
+        //Log.i("lifecycle","init called");
         if (surfaceHolder == null) {
             throw new IllegalStateException("No SurfaceHolder provided");
         }
         if(camera != null) {
-            Log.w("CAMERA ACTIVITY", "initCamera() while already open -- late SurfaceView callback?");
+            //Log.w("CAMERA ACTIVITY", "initCamera() while already open -- late SurfaceView callback?");
             return;
         }
         surface = surfaceHolder;
         surfaceHolder.addCallback(new SurfaceHolder.Callback() {
             @Override
             public void surfaceCreated(SurfaceHolder holder) {
-                Log.i("lifecycle","surface created");
+                //Log.i("lifecycle","surface created");
             }
 
             @Override
             public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-                Log.i("lifecycle","surface changed");
+                //Log.i("lifecycle","surface changed");
                 framingRect = null;
                 framingRectInPreview = null;
                 if(hasSurface) return;
@@ -106,9 +106,9 @@ public final class CameraManager {
                     if (handler == null)
                         handler = new CaptureActivityHandler();
                 } catch (IOException ioe) {
-                    Log.w(TAG, ioe);
+                   // Log.w(TAG, ioe);
                 } catch (RuntimeException e) {
-                    Log.w(TAG, "Unexpected error initializing camera", e);
+                   // Log.w(TAG, "Unexpected error initializing camera", e);
                 }
 
                 AmbientLightManager alm = new AmbientLightManager();
@@ -119,7 +119,7 @@ public final class CameraManager {
 
             @Override
             public void surfaceDestroyed(SurfaceHolder holder) {
-                Log.i("lifecycle","surface destroyed");
+                //Log.i("lifecycle","surface destroyed");
 
                 if (camera != null) {
                     camera.stopPreview();
@@ -158,7 +158,6 @@ public final class CameraManager {
                 rotation = (rotation + Surface.ROTATION_270)%4;
                 break;
         }
-
 
         for(int i = 1; i < sizes.size(); i++) {
             if ((sizes.get(i).width * sizes.get(i).height) > (cs.width * cs.height)) {
@@ -228,8 +227,8 @@ public final class CameraManager {
             configManager.setDesiredCameraParameters(theCamera, false);
         } catch (RuntimeException re) {
             // Driver failed
-            Log.w(TAG, "Camera rejected parameters. Setting only minimal safe-mode parameters");
-            Log.i(TAG, "Resetting to saved camera params: " + parametersFlattened);
+            //Log.w(TAG, "Camera rejected parameters. Setting only minimal safe-mode parameters");
+            //Log.i(TAG, "Resetting to saved camera params: " + parametersFlattened);
             // Reset:
             if (parametersFlattened != null) {
                 parameters = theCamera.getParameters();
@@ -239,7 +238,7 @@ public final class CameraManager {
                     configManager.setDesiredCameraParameters(theCamera, true);
                 } catch (RuntimeException re2) {
                     // Well, darn. Give up
-                    Log.w(TAG, "Camera rejected even safe-mode parameters! No configuration");
+                    //Log.w(TAG, "Camera rejected even safe-mode parameters! No configuration");
                 }
             }
         }
@@ -268,7 +267,7 @@ public final class CameraManager {
      * Asks the camera hardware to begin drawing preview frames to the screen.
      */
     public synchronized void startPreview() {
-        Log.i("lifecycle","preview started [" + (camera == null?"null":"not null") + "]");
+        //Log.i("lifecycle","preview started [" + (camera == null?"null":"not null") + "]");
         if(camera == null) return;
         if(!previewing){
 
@@ -280,14 +279,14 @@ public final class CameraManager {
         if(handler != null){
             handler.full_retard();
         }
-        Log.i("preview","start called [" + (handler == null?"without":"with") + " handle]");
+        //Log.i("preview","start called [" + (handler == null?"without":"with") + " handle]");
     }
 
     /**
      * Tells the camera to stop drawing preview frames.
      */
     public synchronized void stopPreview() {
-        Log.i("lifecycle","preview stopped [" + (camera == null?"null":"not null") + "]");
+        //Log.i("lifecycle","preview stopped [" + (camera == null?"null":"not null") + "]");
         if (autoFocusManager != null) {
             autoFocusManager.stop();
             autoFocusManager = null;
@@ -296,7 +295,7 @@ public final class CameraManager {
             camera.stopPreview();
             previewing = false;
         }
-        Log.i("preview","stop called");
+        //Log.i("preview","stop called");
     }
 
     public synchronized void setTorch(boolean newSetting) {
@@ -351,7 +350,7 @@ public final class CameraManager {
             int leftOffset = (screenResolution.x - width) / 2;
             int topOffset = (screenResolution.y - height) / 2;
             framingRect = new Rect(leftOffset, topOffset, leftOffset + width, topOffset + height);
-            Log.d(TAG, "Calculated framing rect: " + framingRect);
+            //Log.d(TAG, "Calculated framing rect: " + framingRect);
         }
         return framingRect;
     }
@@ -413,7 +412,7 @@ public final class CameraManager {
             int leftOffset = (screenResolution.x - width) / 2;
             int topOffset = (screenResolution.y - height) / 2;
             framingRect = new Rect(leftOffset, topOffset, leftOffset + width, topOffset + height);
-            Log.d(TAG, "Calculated manual framing rect: " + framingRect);
+            //Log.d(TAG, "Calculated manual framing rect: " + framingRect);
             framingRectInPreview = null;
         } else {
             requestedFramingRectWidth = width;
@@ -441,7 +440,7 @@ public final class CameraManager {
     }
 
     public void grab(Camera.PictureCallback callback){
-        Log.i("lifecycle","grab called [" + (camera == null?"no":"with") + " camera]");
+        //Log.i("lifecycle","grab called [" + (camera == null?"no":"with") + " camera]");
         final Camera.PictureCallback _callback = callback;
         if(camera == null){
             surface.addCallback(new SurfaceHolder.Callback() {
