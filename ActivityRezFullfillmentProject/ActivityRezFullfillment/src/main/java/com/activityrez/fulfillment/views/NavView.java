@@ -74,6 +74,7 @@ public class NavView extends ViewModel {
 
         if((Boolean)((Model)m.get("login")).get("show") == false){
             buttongroup.setVisibility(View.VISIBLE);
+            v.requestFocus(View.FOCUS_DOWN);
         } else {
             buttongroup.setVisibility(View.INVISIBLE);
         }
