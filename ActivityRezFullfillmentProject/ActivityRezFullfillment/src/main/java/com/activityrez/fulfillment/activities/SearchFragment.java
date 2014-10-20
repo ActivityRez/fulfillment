@@ -295,7 +295,7 @@ public class SearchFragment extends Fragment {
     }
     private void onTicketNotFound(){
         View v = (View) getView().findViewById(R.id.search_error);
-        ((CustomText) v.findViewById(R.id.error_message)).setText("Not tickets found.");
+        ((CustomText) v.findViewById(R.id.error_message)).setText("No tickets found.");
         getView().findViewById(R.id.search_error).setVisibility(View.VISIBLE);
     }
 }
