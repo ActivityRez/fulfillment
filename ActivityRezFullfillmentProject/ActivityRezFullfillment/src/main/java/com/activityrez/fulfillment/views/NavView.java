@@ -139,7 +139,7 @@ public class NavView extends ViewModel {
                 v.findViewById(R.id.ticketLayout).setVisibility(View.VISIBLE);
             } else {
 
-                a = new ArrayAdapter(ARContainer.context, R.layout.spinner);
+                a = new ArrayAdapter<SoldActivity>(ARContainer.context, R.layout.spinner);
                 try {
                     JSONObject j = new JSONObject("{\"id\":0,\"name\":(none)}");
                     SoldActivity act = new SoldActivity();
@@ -197,7 +197,7 @@ public class NavView extends ViewModel {
                 SimpleDateFormat td = new SimpleDateFormat("MM/dd/yyyy");
                 String today = td.format(cal.getTime());
 
-                d = new ArrayAdapter(ARContainer.context, R.layout.spinner, new DateRange[] {
+                d = new ArrayAdapter<DateRange>(ARContainer.context, R.layout.spinner, new DateRange[] {
                         new DateRange( 1, "Only Today ("+today+")" ),
                         new DateRange( 2, "Starting Today (From "+today+")" ),
                         new DateRange( 3, "All" ),
